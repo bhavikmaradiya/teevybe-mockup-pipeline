@@ -12,10 +12,11 @@ Use this skill only when the current workspace contains an `AGENTS.md` whose top
 1. Locate and read the complete applicable `AGENTS.md` before any batch action.
 2. Record its absolute path and SHA-256 in batch state outside the delivery folder.
 3. Read [references/workflow.md](references/workflow.md), [references/agent-contracts.md](references/agent-contracts.md), and [references/model-routing.md](references/model-routing.md).
-4. When a cloud or scheduled run is configured to discover source artwork from Google Drive, read [references/drive-intake.md](references/drive-intake.md) before listing or downloading intake files. Treat intake as read-only and require its separate Drive-backed durable claim ledger before generation.
-5. When Drive mirroring is configured for the batch, also read [references/drive-publish.md](references/drive-publish.md) before the publish stage.
-6. Inspect every supplied reference individually at original quality. Never build a collage, contact sheet, or minimap.
-7. Create the batch lock and receive coordinator approval before image generation.
+4. For every web/cloud Scheduled task, read [references/cloud-size-charts.md](references/cloud-size-charts.md) before the capability gate and size-chart handling. It defines the verified Drive transport mirror for the unchanged approved `07.jpg`; local/project runs continue to use the repository asset directly.
+5. When a cloud or scheduled run is configured to discover source artwork from Google Drive, read [references/drive-intake.md](references/drive-intake.md) before listing or downloading intake files. Treat intake as read-only and require its separate Drive-backed durable claim ledger before generation.
+6. When Drive mirroring is configured for the batch, also read [references/drive-publish.md](references/drive-publish.md) before the publish stage.
+7. Inspect every supplied reference individually at original quality. Never build a collage, contact sheet, or minimap.
+8. Create the batch lock and receive coordinator approval before image generation.
 
 Reread the full rule file at every stage gate named in `AGENTS.md`. Before each gate, compare its current SHA-256 with the stored value. If it changed, pause, reread it fully, update the hash and affected lock decisions, and revalidate accepted work. Never revert user changes.
 

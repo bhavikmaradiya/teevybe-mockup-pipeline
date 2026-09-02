@@ -53,10 +53,10 @@ The Visual Director must explicitly validate the actual plain-fabric source poin
 
 Reread `AGENTS.md` before selecting and copying the size-chart template.
 
-1. The Coordinator resolves the locked profile (`oversized fit`, `regular fit`, or `polo fit`) and records the corresponding approved template path from `assets/size-charts/` in the batch lock.
+1. The Coordinator resolves the locked profile (`oversized fit`, `regular fit`, or `polo fit`) and records the corresponding approved template. A local/project run uses its path from `assets/size-charts/`. An ephemeral web/cloud Scheduled task must use the exact verified Drive transport mirror governed by [cloud-size-charts.md](cloud-size-charts.md), never a GitHub-rendered or truncated binary response.
 2. The Visual Director validates the prepared final template visually: correct visible profile title, complete expected table/notes, legibility, and a coherent native 1080 x 1440 3:4 composition with no padding or letterboxing.
 3. Operations QA validates the approved final source's JPEG MIME type, exact 1080 x 1440 dimensions, and SHA-256. It must reject any crop, stretch, generated/design-specific addition, logo overlay, re-encoding, or chart-content change.
-4. Operations QA copies the exact approved final template unchanged to `Men/07.jpg` and `Women/07.jpg` and verifies all three files have the same SHA-256.
+4. Operations QA copies the exact approved final template unchanged to `Men/07.jpg` and `Women/07.jpg` and verifies the canonical source plus both copies have the same SHA-256. For a cloud run, the fully materialized and verified Drive mirror is the canonical source used in this comparison.
 
 ## 6. Export and local delivery approval
 

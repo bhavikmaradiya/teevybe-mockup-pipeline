@@ -37,7 +37,7 @@ Upload only the locally approved final JPEGs, `01.jpg` through `07.jpg`. Do not 
 5. Create the new batch folder, then `Men` and `Women` directly under it. Do not create any other folders.
 6. Upload the fourteen approved JPEGs using their exact numeric names and the correct gender-folder parent. Preserve `image/jpeg` MIME type.
 7. List/read back the new batch folder and both gender folders. Confirm two direct children named exactly `Men` and `Women`, seven direct JPEGs in each folder named `01.jpg` through `07.jpg`, and no unexpected published items.
-8. Record only observed Drive IDs/URLs and metadata. Where the connector exposes file size or checksum, compare it against the local audit and record the result. Verify the two uploaded `07.jpg` files match the approved shared local checksum and are the two separately uploaded copies of the exact same local source.
+8. Record only observed Drive IDs/URLs and metadata. Where the connector exposes file size or checksum, compare it against the local audit and record the result. Verify the two uploaded `07.jpg` files match the approved shared local checksum and are the two separately uploaded copies of the exact same local source. In an ephemeral cloud run, that source may be the fully materialized, mechanically verified Drive transport mirror governed by [cloud-size-charts.md](cloud-size-charts.md); it must still match the canonical repository-template SHA-256 and remain byte-identical.
 9. Mark the stage `pass` only after this readback. The Coordinator can then mark the batch fully delivered.
 
 ## Failure and recovery
