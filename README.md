@@ -7,6 +7,7 @@ Portable Codex project for creating and validating staged TeeVybe T-shirt mockup
 - `AGENTS.md` — live, authoritative product and mockup rules.
 - `.codex/skills/tee-mockup-pipeline/` — project-local skill, persistent-role routing, workflow gates, handoff contracts, Drive publishing rules, and verifier.
 - `CLOUD_RUNBOOK.md` — cloud bootstrap, capability gate, authoritative-file index, and a ready-to-use prompt that delegates all behavior to the complete tracked rules and skill.
+- `cloud-state/drive-intake-history.jsonl` — tracked cloud intake claim/delivery ledger; it stores processing metadata only, never source or generated images.
 - `assets/size-charts/` — the three approved reusable 1080 × 1440 size-chart templates.
 - `scripts/verify-delivery.sh` — final read-only delivery audit.
 
@@ -27,6 +28,7 @@ If the Codex installation does not discover project-local skills, copy `.codex/s
 The repository makes the instructions, role contracts, scripts, and approved chart assets portable, but it does not grant cloud tools or credentials. A scheduled/cloud run must provide:
 
 - repository access and a writable checkout;
+- private-repository push permission when the cloud Drive intake ledger is enabled;
 - the reference artwork in a cloud-accessible location (never a temporary path from another device);
 - image-generation/editing capability;
 - support for the coordinator, visual-director, and operations-QA role boundaries required by the skill;

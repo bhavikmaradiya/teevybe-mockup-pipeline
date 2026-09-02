@@ -1,117 +1,128 @@
 # Google Drive cloud intake
 
-Use this reference only when a cloud or scheduled run is configured to discover source artwork from a Google Drive intake folder. It defines input discovery and queue state only. It does not replace, summarize, or modify the product rules in the current workspace `AGENTS.md`, the runtime workflow, or the Drive delivery-publish procedure.
+Use this reference only when a cloud or scheduled run discovers source images from one configured Google Drive intake folder. It defines cloud input discovery and durable queue state only. It does not replace, summarize, or modify the product rules in the current workspace `AGENTS.md`, the normal runtime workflow, or Drive delivery publishing.
 
 ## Required configuration
 
-The scheduled task must receive these configured values; never guess them:
+The scheduled task must receive these values; never guess them:
 
 ```yaml
-drive_intake_root_id: "user-approved Google Drive folder ID"
+drive_intake_folder_id: "user-approved Google Drive folder ID"
 intake_timezone: "Asia/Kolkata"
-intake_date: "today in intake_timezone unless the user supplies a date"
-intake_ledger_path: "durable path to work/mockup-runs/drive-intake-history.jsonl"
+intake_date: "today in intake_timezone unless the user supplies another date"
+github_ledger_path: "cloud-state/drive-intake-history.jsonl"
 ```
 
-The Drive folder ID is configuration, not blanket permission to change its contents or sharing. Ground the folder by Drive metadata before every scan and preserve all source files and folders unchanged.
+The Drive folder ID authorizes read-only discovery from that folder. It does not authorize changes to the folder, its contents, or sharing.
 
-The intake ledger must survive scheduled runs. If the checkout is ephemeral and the configured ledger cannot be restored from persistent storage, stop before generation; do not rescan as if every file were new.
+The cloud checkout must have permission to fetch the repository and push ledger commits to its private GitHub remote. Before generation, confirm that the current branch is synchronized and that `github_ledger_path` exists. If GitHub state cannot be read or a ledger commit cannot be pushed, stop before spending generation credits.
 
-## Drive layout and naming contract
+## Flat-folder discovery for today's images
 
-Use one date folder directly below the configured intake root:
+1. Resolve the target calendar date in `intake_timezone`; never use an implicit cloud-server timezone.
+2. Ground `drive_intake_folder_id` through Google Drive metadata and confirm it is the intended folder.
+3. List all direct children with their observed file ID, name, MIME type, parent, `createdTime`, `modifiedTime`, size, and available checksum.
+4. Select direct image children whose observed `createdTime`, converted to `intake_timezone`, falls on the target date. Supported inputs are `image/jpeg`, `image/png`, and `image/webp`, plus another format only when the available image tool can inspect it safely.
+5. Ignore subfolders and non-image files for generation, but record them as unexpected scan items.
+6. Sort selected images deterministically by `createdTime`, then file ID. Inspect every selected image individually at original quality; never create a collage, contact sheet, or minimap.
 
-```text
-<intake root>/
-  YYYY-MM-DD/
-    <design-key>__front.<ext>
-    <design-key>__back.<ext>      # optional
-    <another-design>__front.<ext>
-```
+The intake folder remains flat. Do not require the user to create date folders, design subfolders, or adopt a new filename convention. Do not move older files into today's selection by using `modifiedTime` as a substitute for `createdTime`.
 
-- The date folder name is the calendar date in `intake_timezone`.
-- A design group contains exactly one or two image files.
-- Every filename must use the exact form `<design-key>__front.<ext>` or `<design-key>__back.<ext>`.
-- `<design-key>` must be identical for the two files belonging to one design and must not contain `__front` or `__back` elsewhere.
-- Supported source MIME types are `image/jpeg`, `image/png`, and `image/webp` unless the current image tool supports another user-supplied format.
-- A one-image design must still include its correct `__front` or `__back` suffix.
-- A two-image design must contain one `__front` and one `__back`. Duplicate sides, an unlabeled image, more than two files for one key, or conflicting design keys are intake failures and must not reach generation.
+## Grouping one or two images into a design
 
-Do not infer grouping from visual similarity, upload order, consecutive Drive results, generic names such as `Photo 1`, or timestamps. If existing files do not follow the naming contract, stop those files as `needs-input-fix` and report the exact rename or regrouping needed.
+Each design group must contain one source image or a verified front/back pair. Existing filenames may be arbitrary and inconsistent, so filenames and upload order are grouping hints rather than authoritative product evidence.
 
-## Today's discovery
+For every selected image, the Visual Director must:
 
-1. Resolve today's date in `intake_timezone`; never use an implicit server timezone.
-2. Ground the configured intake root by Drive metadata and confirm it is a folder.
-3. List its direct children and select the single direct child whose name exactly equals today's `YYYY-MM-DD` value.
-4. If today's folder does not exist, finish the scan successfully with `no-input`; do not create it unless the user explicitly requested folder creation.
-5. Ground today's folder and list all of its direct children with file ID, name, MIME type, parent, created time, modified time, size, and available checksum.
-6. Ignore subfolders and non-image files for generation, but report unexpected items in the scan record.
-7. Parse and group valid image names by exact `<design-key>`.
-8. Sort groups deterministically by design key. Process one complete group at a time; do not run different designs in parallel.
+1. Inspect the image independently and record the visible garment side, artwork, T-shirt color, fit evidence, model/reference context, and any visible product identifiers.
+2. Compare normalized filename stems, including obvious trailing sequence or side markers, only as candidate hints. Do not impose a required naming pattern.
+3. Consider close upload-time adjacency only as a secondary hint. Never group files solely because they were uploaded consecutively.
+4. Pair two images only when individual visual inspection establishes that they are complementary front/back references for the same T-shirt design. The garment color, product context, and artwork relationship must be coherent, and the two visible sides must not conflict.
+5. Leave an image as a one-image design when no verified mate exists.
 
-The dated folder determines the requested day. Do not additionally reject a correctly placed file merely because Drive's original `createdTime` is older—for example, when an older file was copied or moved into today's intake folder.
+Never group more than two images into one design. Never infer a pair from a shared generic name such as `Photo 1`/`Photo 2`, a common model, or a common T-shirt color without confirming the actual product relationship visually. Never treat the trailing `1` in a legitimate design name as automatically being a sequence marker.
 
-## Durable unprocessed-state ledger
+If two or more plausible groupings remain after individual inspection, or the side/product relationship is uncertain, record those files as `blocked` with `ambiguous-grouping` and stop them before generation. Continue to another clearly resolved design only after the blocked ledger event is durably pushed.
 
-Use append-only JSON Lines at the configured durable `intake_ledger_path`. Never rewrite earlier events. Each event must contain:
+## GitHub processing ledger
+
+Use the tracked append-only JSON Lines file at `cloud-state/drive-intake-history.jsonl`. This file is the cross-run source of truth for whether a Drive input group has been processed. Do not use an ephemeral checkout, local-only `work/` state, Drive moves, filename changes, or output-folder guesses as the processing record.
+
+Every event after the initialization record must contain:
 
 ```json
 {
   "event": "claimed|delivered|blocked",
   "recorded_at": "ISO-8601 timestamp",
   "intake_date": "YYYY-MM-DD",
-  "intake_folder_id": "observed Drive folder ID",
-  "design_key": "exact parsed design key",
+  "intake_timezone": "Asia/Kolkata",
+  "drive_intake_folder_id": "observed folder ID",
+  "design_group_id": "stable SHA-256 of the sorted source fingerprints",
   "source_files": [
     {
-      "side": "front|back",
       "drive_file_id": "observed ID",
       "name": "observed filename",
+      "side": "front|back",
       "mime_type": "observed MIME type",
+      "created_time": "observed Drive value",
       "modified_time": "observed Drive value",
       "size_bytes": null,
-      "checksum": "observed checksum when available"
+      "checksum": "observed checksum when available",
+      "source_fingerprint": "SHA-256 of the canonical observed source identity"
     }
   ],
-  "source_fingerprint": "SHA-256 of the canonical sorted source-file identity record",
   "batch_id": "",
   "delivery_folder": "",
   "reason": ""
 }
 ```
 
-Build the fingerprint from the sorted source records using their observed Drive file IDs, side labels, modified times, sizes, and available checksums. Do not use filenames alone.
+Build each source fingerprint from the observed Drive file ID, created time, modified time, size, and available checksum. Build `design_group_id` from the sorted source fingerprints. Never use filenames alone as identity.
 
-For each discovered group:
+For each resolved group:
 
-- No prior event for its fingerprint: it is `unprocessed`.
-- Latest event is `delivered`: skip it permanently.
-- Latest event is `blocked`: skip it until the user explicitly resolves or resubmits it.
-- Latest event is `claimed` without a later terminal event: treat it as an interrupted run and stop it for manual recovery; never automatically regenerate it.
+- No ledger event for its `design_group_id`: `unprocessed`.
+- Latest event is `delivered`: skip permanently.
+- Latest event is `blocked`: skip until the user explicitly resolves or resubmits it.
+- Latest event is `claimed` without a later terminal event: treat it as an interrupted run; do not automatically regenerate it.
 
-Before the first image-generation call for a group, append and durably persist its `claimed` event. If that write cannot be confirmed, do not generate.
+If a source file ID already belongs to a delivered group but its fingerprint has changed, treat it as a revised prior input and block it for explicit user confirmation instead of silently creating a second batch.
 
-After final delivery approval and required output persistence, append `delivered`. If the batch is stopped by ambiguity, missing capability, repeated critical failure, or unrecoverable validation failure, append `blocked` with the exact reason before moving to another design. A blocked group must not be automatically retried by the next scheduled run.
+## Atomic claim and terminal commits
 
-When a source file is intentionally revised, use a new design key such as `<design-key>-v2` or obtain explicit user approval to process its new fingerprint. A changed fingerprint alone must not silently create a second batch from the same design key.
+Process only one design group at a time and use only one scheduled worker for the intake folder.
+
+Before the first generation call for a group:
+
+1. Fetch the latest GitHub branch state without discarding local/user changes.
+2. Reread the ledger and confirm the group is still unprocessed.
+3. Append its `claimed` event.
+4. Commit only the ledger change with a message containing the design-group ID.
+5. Push the commit and confirm the remote accepted it.
+
+If synchronization, commit, or push fails, do not generate. After a non-fast-forward rejection, fetch and reread the remote ledger; if another run claimed the group, skip it. Do not force-push, overwrite history, or resolve a concurrent claim by generating anyway.
+
+After complete pipeline approval and durable output persistence, append `delivered`, commit, push, and confirm the remote state. If ambiguity, missing capability, repeated critical failure, or another terminal blocker stops the design, append `blocked` with the exact reason, commit, and push before selecting another design.
+
+A scheduled run must not finish successfully while a group it claimed lacks a durably pushed terminal event. An interrupted `claimed` group requires manual recovery or explicit user authorization to resume.
+
+The GitHub ledger stores metadata and status only. Do not commit source images, generated candidates, delivery JPEGs, credentials, or `work/` state unless the user separately changes the repository policy.
 
 ## Per-design handoff
 
-For each unprocessed group, download or materialize its files one at a time using observed Drive metadata and authenticated Drive file access. Preserve original bytes and names in run state. Inspect each image independently at original quality.
+For an unprocessed resolved group, download or materialize its source files one at a time through authenticated Google Drive access. Preserve their original bytes, names, and observed metadata in run state. Pass the individually inspected files and resolved front/back roles into the normal TeeVybe batch preflight.
 
-Pass the exact observed front/back paths and the user's scheduled-task defaults into the normal preflight. Filename side labels establish the submitted role, but the Visual Director must still verify that each image visibly represents the named garment side. If a label conflicts with visible orientation or two files appear not to belong to the same design, append `blocked` and do not guess, swap, merge, or generate.
+The Visual Director's resolved side labels become the intake handoff, but all normal artwork-side and reference validations still apply. If later inspection reveals that the grouping or side decision was wrong, block the group rather than guessing, swapping, merging, or generating.
 
-After this handoff, follow `AGENTS.md`, `SKILL.md`, `workflow.md`, `agent-contracts.md`, and `model-routing.md` without alteration. Intake discovery does not relax any batch gate.
+After handoff, follow the complete current `AGENTS.md`, `SKILL.md`, `workflow.md`, `agent-contracts.md`, and `model-routing.md` without alteration. Intake discovery does not relax any batch gate.
 
-## Source safety and concurrency
+## Source safety
 
-- Intake is read-only. Do not rename, move, delete, overwrite, share, or reorganize source files or folders.
-- Do not place completion markers inside the user's Drive intake tree.
-- Use a single scheduled worker for one intake root. If multiple workers are possible, the ledger store must provide an atomic claim; otherwise stop rather than risk duplicate generations.
-- Do not begin a second design until the current design has a durably recorded `delivered` or `blocked` terminal event.
-- Drive output publishing, when configured, remains a separate post-approval stage governed only by `drive-publish.md`.
+- Keep the Drive intake folder and every source file read-only.
+- Do not rename, move, delete, overwrite, share, reorganize, or mark source files in Drive.
+- Do not create completion markers inside Drive.
+- Drive output publishing is a separate post-approval stage governed only by `drive-publish.md`.
 
-## Scan result
+## Scan record
 
-Record a compact scan report in run state containing the observed root and date-folder IDs, intake date/timezone, all direct child metadata, parsed groups, unexpected items, source fingerprints, ledger decisions, and the next eligible design key. A scan report is evidence of discovery only; it is not visual acceptance or batch approval.
+Store a scan report in run state containing the observed folder metadata, target date/timezone, every direct child considered, individual inspection notes, proposed and accepted groupings, unexpected items, source fingerprints, design-group IDs, ledger decisions, and the next eligible group. The scan report is discovery evidence only; it is not visual acceptance or batch approval.

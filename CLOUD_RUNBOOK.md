@@ -34,7 +34,7 @@ Before beginning a run, verify that the cloud environment has:
 
 - a writable checkout of this complete repository;
 - access to every supplied reference through a durable cloud attachment or storage path;
-- a configured Google Drive intake root and durable intake ledger when Drive discovery is enabled;
+- a configured flat Google Drive intake folder, private-GitHub read/write access, and the tracked `cloud-state/drive-intake-history.jsonl` ledger when Drive discovery is enabled;
 - the image-generation and generative-editing capabilities required by the skill;
 - support for the models and persistent role agents required by `model-routing.md`, or an explicitly disclosed runtime fallback that preserves all role boundaries;
 - persistent storage for delivery files and required run state when the checkout is temporary; and
