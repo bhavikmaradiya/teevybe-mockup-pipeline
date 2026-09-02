@@ -11,7 +11,13 @@ The current approved TeeVybe Drive root is:
 
 Treat this tracked value as configuration, not permission to alter the root. Before every publish, read Drive metadata and verify it remains a folder. Preserve its existing contents, hierarchy, and sharing state.
 
-The intake folder's read-only rule does not make the entire Google Drive connector read-only. Publishing uses separate write authorization against this destination. Before spending generation credits in an ephemeral cloud run, verify that folder creation, JPEG upload, and readback are available and that the connected Drive account has sufficient storage quota. A quota failure is a publish-capability failure; do not generate a batch that cannot be durably stored.
+The intake folder's read-only rule does not make the entire Google Drive connector read-only. Publishing uses separate write authorization against this destination. Before spending generation credits in an ephemeral cloud run, verify the configured destination and availability of folder creation, JPEG upload, native chart copy, and readback. Apply the quota policy below; an account-quota reporting action is not a required capability.
+
+### Cloud storage-quota policy
+
+- If the connected interface exposes usable quota information, inspect it and record the result. A confirmed exhausted quota or an unresolved actual storage-quota error blocks new generation until resolved.
+- If quota information is absent, unsupported, or inaccessible while the required destination and publishing actions remain available, record `quota_status: unavailable` and proceed through the normal claim and generation gates. Do not equate unknown quota with full storage, claim that capacity was verified, require reconnection solely for quota reporting, or create test uploads/copies just to probe capacity. Proceeding with unavailable quota carries a residual risk of a later storage failure; disclose that once without turning it into a blocker.
+- If an actual create, upload, or copy operation reports a storage-quota failure, stop further generation and publishing immediately. Preserve available generated assets and any partial delivery, record the exact failure and successful destination IDs, and follow the existing failure/recovery and Drive terminal-marker procedures. Do not regenerate completed images, delete files to free space, retry automatically, or mark delivery complete.
 
 ## Required outcome
 
