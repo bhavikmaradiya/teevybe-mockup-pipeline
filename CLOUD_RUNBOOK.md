@@ -57,7 +57,7 @@ Do not rewrite the user's request into inferred product rules. The complete repo
 
 ## Ready-to-use cloud or scheduled task prompt
 
-Replace `<DRIVE_INTAKE_FOLDER_ID>`, `<DRIVE_STATE_FOLDER_ID>`, and `<CONFIRMED_MATERIAL>` before saving the task. The default fit below is oversized; change that single value only when the scheduled intake is for another fit.
+Replace `<DRIVE_INTAKE_FOLDER_ID>`, `<DRIVE_STATE_FOLDER_ID>`, `<DRIVE_DELIVERY_ROOT_ID>`, and `<CONFIRMED_MATERIAL>` before saving the task. Keep these private Drive IDs in the task configuration rather than committing them to this public repository. The default fit below is oversized; change that single value only when the scheduled intake is for another fit.
 
 ```text
 Use the connected GitHub tool to open the public repository bhavikmaradiya/teevybe-mockup-pipeline at its main branch, then run the TeeVybe cloud mockup intake. If $tee-mockup-pipeline is exposed as an available skill in this scheduled chat, invoke it. In every case, read and follow its latest tracked SKILL.md and required references from that repository. Do not assume a persistent checkout or use shell Git.
@@ -67,6 +67,7 @@ Runtime configuration:
 - The intake folder is flat; source filenames must remain unchanged.
 - Google Drive processing-state folder ID: <DRIVE_STATE_FOLDER_ID>.
 - The state folder is separate from intake and stores only the durable folder markers defined by drive-intake.md.
+- Google Drive delivery root folder ID: <DRIVE_DELIVERY_ROOT_ID>.
 - Intake date: today in Asia/Kolkata.
 - Default user-requested fit for every discovered design: oversized fit.
 - Confirmed truthful material callout: <CONFIRMED_MATERIAL>.
