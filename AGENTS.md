@@ -1,0 +1,197 @@
+# T-shirt Mockup Project Rules
+
+Apply these requirements to every T-shirt mockup batch in this workspace, and remember it's T-shirt for terminology.
+
+## Mandatory stage-gate reread and validation
+
+- Treat this file as an active checklist, not background context. Reread the full rule file before starting a batch and again before every major stage: input/reference analysis, fit/model/theme locking, each generation group, artwork/fabric review, size-chart creation, logo placement, export, and final delivery.
+- At each stage, explicitly verify the applicable rules before proceeding. Do not continue, save, or copy an asset when a required condition is uncertain or violated; stop, correct or regenerate it, then reread the rules before resuming.
+- After every generation group, validate artwork side placement, print fidelity, model identity, fit silhouette, environment continuity, pose, framing, aspect ratio, and image-specific requirements before beginning the next group.
+- Before delivery, perform an individual file-by-file audit of filenames, folder structure, dimensions, format, shared-chart identity, selected reusable template identity, aspect-preserving export, and all applicable content rules. A prompt mentioning a rule is not sufficient proof of compliance.
+
+## Credit-efficient generation control
+
+- Reduce regeneration by validating small checkpoints before generating a full batch. Do not generate all men's and women's mockups in one uninterrupted run.
+- Before image generation, write a short batch lock summary covering: front artwork role, back artwork role if present, fit type, broad model eligibility requirements, the contrast requirement for each gender's `01.jpg` bottom wear, any accessories explicitly required by the user, environment theme and its T-shirt/background contrast plan, and output folder name. Do not preselect or lock an exact model identity, face, hairstyle, body build, accessory styling, or bottom-wear style/color before that gender's first `01.jpg` candidate is generated and visually accepted. After accepting `01.jpg`, record its actual visible identity, hairstyle, styling, accessories, body build, and bottom-wear details as the fixed continuity anchor for the remaining same-gender images.
+- Generate each gender in a gated sequence: first create `01.jpg` front view, validate it as the identity/artwork/fit anchor, then create one identity test view from a different angle. Continue with the remaining same-gender mockups only after both accepted images clearly show the same person, same essential styling, same fit, and correct artwork placement.
+- Prefer fixing prompt constraints and regenerating only the failed numbered image. Do not restart a whole gender set unless the accepted anchor itself is wrong, the artwork side/fit was misclassified, or multiple later images prove the identity anchor is unstable.
+- Use one candidate per required image unless a previous attempt failed validation. Do not request multiple variations for the same numbered image just for choice or aesthetics.
+- Regenerate only for critical failures: wrong identity, artwork, side placement, fit, framing, or required text—not minor invented styling details.
+- For `04.jpg` generation, deliberately compose the upper frame from approximately the chin and lower lip downward; do not prompt or compose from the top of the head, forehead, eyes, or nose. Treat `04.jpg` as an artwork-first camera close-up, not a T-shirt-silhouette or upper-body mockup. Without changing the artwork's true size or placement on the garment, move the camera close enough that the complete artwork is shown at the largest practical scale with only a narrow, useful border of surrounding fabric. Sleeves, side seams, hands, trousers, and broad areas of blank T-shirt or environment are unnecessary and should normally remain outside the frame. For a tall or large back artwork, its complete top and bottom should nearly define the vertical composition while preserving a small fabric margin; for a small chest artwork, zoom into that chest region rather than showing the whole garment. Reject `04.jpg` when excess side fabric, sleeves, body silhouette, or background makes the image T-shirt-centric instead of design-centric, even if the artwork is technically complete and sharp. The slight-visibility allowance is validation-only: if a generated candidate includes a harmless chin, lower lip, nape, or narrow lower-face edge, do not regenerate when the complete artwork is large, sharp, readable, centered, unobstructed, and remains the clear subject. Reject facial inclusion only when it materially competes with the product, includes substantial face such as the eyes, nose, or full head, or causes the artwork to become smaller, obscured, cropped, distorted, or out of focus.
+- Check every generated source's pixel dimensions immediately before visual acceptance. A source is composition-valid only when its width:height ratio is exactly 3:4; a near miss such as 1086 x 1449 or 1085 x 1450 is not exact. When an otherwise acceptable candidate is off-ratio, do not reroll the person, artwork, styling, or scene from scratch. Use one targeted generative reframe onto an exact 3:4 composition, with the accepted candidate as the preservation reference and with identity, artwork, garment, styling, and environment locked. Then re-run both visual and mechanical checks. Cropping, stretching, padding, or deterministic artwork compositing remain prohibited.
+- If a generated image is good except for a minor final-delivery issue that can be corrected without violating any rule, fix only that issue. Never use deterministic compositing to place or alter T-shirt artwork, but official TeeVybe logo placement and final JPEG export may follow the brand-logo rules.
+- Track accepted anchors and rejected reasons during the batch. If the same failure repeats twice, stop and strengthen the lock summary or identity anchor before spending more image generations.
+- Quality must not be lowered to save credits. Keep the same final quality, 4K-level source detail, photorealism, readable artwork, and exact 1080 x 1440 requirement for all product images; preserve the approved template content during the required `07.jpg` copy. Save credits by reducing failed attempts, not by reducing image quality.
+
+## Models and poses
+
+- Use a different male model and a different female model for every new batch, and use Indian models on priority, on fallback you may use other
+- Use handsome light skin models, haired
+- Within one batch, keep the same male identity across all men's images and the same female identity across all women's images, and lock it.
+- Do not create, select, or enforce an exact canonical male or female identity before generating that gender's first `01.jpg` candidate. Pre-generation model direction is limited to the user's explicit requirements and the broad eligibility rules in this file. The first visually accepted `01.jpg` becomes that gender's canonical identity anchor and then defines the exact face, apparent age range, skin tone, hairstyle, facial hair if applicable, body build, eyewear, jewelry, visible accessories, overall styling, and bottom wear for later same-gender images.
+- Validate a first `01.jpg` candidate on product-critical requirements, explicit user instructions, visual suitability, model eligibility, and non-reuse against prior batches. Do not reject or regenerate it merely because its hairstyle, hair direction, accessory choice, facial details, body build, or other acceptable styling differs from a speculative pre-generation description.
+- Before generating each gender's first `01.jpg`, review prior accepted anchor descriptors and give the renderer a concise non-reuse direction that avoids the recurring face shape, hairstyle, facial-hair pattern, and accessory combination seen in recent batches. This is a novelty guard, not an exact preselected identity: do not prescribe a canonical face before `01.jpg`, and accept any eligible, product-suitable, visibly new person who passes the history comparison.
+- Treat identity as exact, not approximate. Do not accept outputs where the person merely looks similar. Reject and regenerate if the face shape, hair, facial hair, skin tone, eyewear, jewelry, body build, or essential styling changes between images.
+- After `01.jpg` is visually accepted, lock all of that anchor's visible essential styling for the gender. This includes hairstyle, sunglasses/eyewear, earrings, necklaces/chains, watches/bracelets, rings, and the actual visible bottom-wear style, color, wash, and silhouette. Before acceptance, only user-explicit accessory requirements and the bottom-wear contrast requirement apply. If a locked accessory is hidden naturally by angle or crop in a later image, it may be partly invisible, but it must not be removed, added, swapped, or replaced when visible.
+- Treat natural hair routing as pose variation, not identity drift, when the locked haircut, length, color, texture, part, and overall hairstyle remain the same. Hair may move in front of or behind a shoulder, be tucked behind an ear, or rest on blank garment fabric without causing rejection or regeneration, provided it does not cover the artwork/print area, materially hide the T-shirt silhouette, or change into a different hairstyle. Do not lock a non-product-critical hair route merely for cross-image pixel-level consistency.
+- Use the accepted first clear front mockup for each gender as that gender's visual identity reference for the remaining same-gender images in the batch. Every later same-gender generation prompt must explicitly reference the same exact person and same essential styling from the accepted anchor.
+- To reduce wasted regeneration, do not generate all six same-gender mockups blindly. First generate and validate the first clear front mockup for that gender, then generate one additional same-gender identity test view. Continue with the remaining same-gender images only after both accepted images visibly match the same locked person and styling.
+- If identity drift appears after two failed attempts for a gender, stop the batch flow and create a stronger plain model identity anchor before continuing. Do not keep regenerating full product views without a validated identity anchor.
+- Use natural, candid poses and believable everyday activity. Models may walk, sit, turn, adjust clothing, look around, or interact subtly with the setting.
+- Avoid stiff poses that look like the model is standing only to display a product.
+- Do not repeatedly default to cafes, bookstores, art galleries, or other generic lifestyle settings across consecutive or frequent batches. These environments remain allowed when they genuinely suit the T-shirt artwork, audience, styling, or intended mood, but they must not become automatic defaults.
+- Before generation, select and lock an environment direction appropriate to the current design, target vibe, fit, gender styling, poses, and product context. Keep the batch visually coherent while varying individual scenes naturally within that direction; do not place every image against an identical background.
+- Experimental batch environment-continuity rule: Once the environment theme is selected from the T-shirt design and product context—or explicitly provided by the user—lock that same overall theme for the entire batch. Do not switch to a completely different environment theme between numbered mockups in the batch. Vary each image only within the locked theme through different positions, nearby places or sub-locations that clearly belong to the same environment family, camera angles, points of view, framing, depth, model movement, and natural background aspects. The backgrounds must not be identical or static, but every image should still feel like part of one coherent themed setting. A user-provided environment or theme is authoritative and must remain locked unless the user explicitly requests a change.
+- Rotate environment directions across batches. Suitable options include clean studio, simple e-commerce, minimal indoor, streetwear outdoor, urban wall, rooftop, college casual, neutral lifestyle, and believable Indian everyday settings such as local streets, terraces, markets, campuses, city lanes, metro areas, and neighborhood spaces.
+- Backgrounds must remain tasteful and secondary. Before locking an environment, explicitly compare its expected hue, luminance, exposure, and dominant background area against the actual T-shirt color. The environment must provide obvious visual separation around the garment, not merely a thematically suitable setting. A dark, navy, cobalt, or similarly deep T-shirt must not be placed against a predominantly dark/night background unless lighting and a visibly lighter or contrasting background zone create clear edge and silhouette separation; blur alone does not create contrast. If separation is doubtful, choose a lighter, complementary, or higher-key environment before generating `01.jpg`.
+- For lifestyle or environment-based mockups, default to a shallow depth of field with the contextual background softly to noticeably optically blurred, while the model, T-shirt silhouette, artwork, fabric texture, seams, hands, and required product details remain sharply focused. Use enough blur to separate and highlight the model and garment, but retain sufficient recognizable environmental character to preserve the locked environment family and continuity across the batch. Do not apply this as artificial whole-image softness, and do not force it onto clean studio, flat-lay, model-free fabric-detail, or size-chart assets where it is not appropriate.
+- When the user requests more or less background blur, that direction is authoritative for the batch. Lock the requested blur strength during preflight and preserve it consistently across applicable numbered images without blurring the product or model.
+- Don't change the design artwork through out the process keep the design as provided. 
+- In first image we create, our T-shirt should be center of attraction, shouldn't blend in bg, so customer can easily see what they are buying
+- If you generate a model mockup with bottoms, always use a bottom-wear color that contrasts clearly with the T-shirt. Never match the bottoms to the T-shirt color. You may use jeans, shorts, trousers, or other suitable bottoms, choose a visually contrasting neutral color that complements the T-shirt.
+- For each gender, generate `01.jpg` with bottom wear that clearly contrasts with and complements the T-shirt, then lock the actual accepted `01.jpg` bottom-wear style, color, wash, and silhouette for every later applicable image in that gender's set. Do not reject or regenerate `01.jpg` merely because its acceptable contrasting bottom wear differs from a speculative pre-generation preference. Reject `01.jpg` bottom wear only when it fails product contrast, is visually unsuitable, or violates an explicit user instruction. After `01.jpg` is accepted, do not switch its locked jeans, trousers, shorts, color, wash, or silhouette.
+
+## T-shirt fit classification
+
+- Before generating any image for a batch, classify and lock the T-shirt profile as `regular fit`, `oversized fit`, or `polo fit`.
+- If the user states the fit in the request or provides it with the input, that instruction is authoritative and must override visual inference.
+- If the user does not state the fit, inspect the original reference image individually and determine it before generation. Oversized indicators include dropped shoulder seams, a wider body, longer or wider sleeves, extra drape, and a relaxed long silhouette. Regular-fit indicators include shoulder seams near the natural shoulder, a standard body width and length, and conventional sleeve proportions.
+- If the reference does not provide enough visual evidence to classify the fit confidently, ask the user before beginning generation. Do not guess when the result is genuinely ambiguous.
+- Keep the selected fit category consistent throughout the entire batch for both genders and every deliverable: front, back, angled side, design closeup, full-view natural pose, fabric detail, Instagram portrait post, and Instagram Story.
+- Preserve the defining fit silhouette across poses and camera angles. An oversized T-shirt must retain dropped shoulders, generous width, longer sleeves, and relaxed drape; a regular-fit T-shirt must retain natural shoulder placement, standard proportions, and a closer but comfortable silhouette.
+- Do not silently change an oversized T-shirt into a regular fit, or a regular T-shirt into an oversized fit, because of the model's gender, body type, pose, styling, or scene. Gender-appropriate sizing may vary, but the locked fit category and its visible characteristics must remain unchanged.
+- Use `polo fit` only for a polo T-shirt. Its product silhouette and collar must remain consistent throughout the batch.
+
+## Fit-specific size charts
+
+- Treat all size-chart measurements below as inches.
+- The locked T-shirt profile determines which approved template source must appear in both the men's and women's `07.jpg` exports. Never mix templates between profiles.
+- Preserve every size label and measurement exactly as recorded here. Do not estimate, round, interpolate, invent missing sizes, or change a value to suit a generated layout.
+- Verify every displayed size-chart value against this section before delivery.
+- `07.jpg` uses an approved reusable final fit-template: it is not generated, fitted, or encoded for each design. The final templates in `assets/size-charts/` are already crisp, natively composed 1080 x 1440 JPEGs, regenerated once from the supplied chart data and style references. For a batch, copy the profile-matched final template byte-for-byte unchanged. Do not add a logo, design-specific motif, text, or other chart change.
+
+### Oversized fit
+
+| Measurement | XS | S | M | L | XL | 2XL |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Chest | 41 | 43 | 44 | 46 | 49 | 52 |
+| Length | 28 | 28 | 29 | 29.5 | 30 | 31 |
+| Shoulder | 17.5 | 18.5 | 19.5 | 20 | 21 | 23.5 |
+| Sleeve | 8 | 8.5 | 9 | 9.5 | 9.5 | 10 |
+
+Oversized-fit chart notes:
+
+- Measurements may vary by ±0.5 inch.
+- Chest is measured 1 inch below the armhole.
+- Sleeve length is measured from the shoulder seam.
+- For an extra-baggy fit, choose one size larger.
+
+### Regular fit
+
+| Measurement | XS | S | M | L | XL | 2XL | 3XL |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Chest | 36 | 38 | 40 | 42 | 44 | 46 | 48 |
+| Length | 26 | 27 | 28 | 29 | 30 | 31 | 32 |
+| Shoulder | 16 | 17 | 17.5 | 18 | 18.5 | 19 | 20 |
+| Sleeve | 8 | 8.5 | 9 | 9.5 | 10 | 10.5 | 11 |
+
+### Polo fit
+
+Use the approved polo template below. Its displayed measurements are the authoritative polo values:
+
+| Measurement | XS | S | M | L | XL | 2XL | 3XL |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Chest | 36 | 38 | 40 | 42 | 44 | 46 | 48 |
+| Length | 26 | 27 | 28 | 29 | 30 | 31 | 32 |
+| Shoulder | 16 | 17 | 17.5 | 18 | 18.5 | 19 | 20 |
+| Sleeve | 8 | 8.5 | 9 | 9.5 | 10 | 10.5 | 11 |
+
+## Artwork inputs and side placement
+
+- A batch may contain either one artwork input or two artwork inputs.
+- For a one-image batch, treat the supplied image as the authoritative design for the side shown or specified by the user (front or back). Keep that artwork only on its intended side and keep the opposite side completely blank. Determine the intended side from the user's instruction first and the visible garment orientation second; ask only if the side is genuinely ambiguous.
+- For a two-image batch, treat one image as the authoritative front reference and the other as the authoritative back reference. Identify and label both roles before generation. Place the front artwork only on the front and the back artwork only on the back.
+- Never swap, mirror, merge, duplicate, reinterpret, or transfer artwork between sides. Do not invent an opposite-side print that was not provided.
+- In every generated view, show only the artwork physically visible from that camera angle. Front views use the front reference, back views use the back reference, and angled/side views may show only the naturally visible portions of the correct side or sides without wrapping artwork unrealistically across seams.
+- For a two-sided batch, use the design closeup for the more detailed or primary artwork unless the user specifies a preferred side. Use the full-view natural pose to give useful visibility to the side that needs additional coverage while preserving the established filename order.
+- Inspect every supplied front and back reference individually at original quality. Do not combine the two references into a collage, contact sheet, minimap, or other grouped image for analysis or generation.
+
+## Deliverables
+
+- Deliver 14 individual JPEG product files per batch: six JPEG mockups and one shared fit-template export in each gender folder. Generate 12 unique image assets by default: six gender-specific mockups for each gender plus one reusable shared fit-template export. If the model-free fabric-detail exception below is used, generate 11 unique assets instead: five gender-specific model mockups per gender, one shared model-free fabric detail, and one shared fit-template export. Copy every shared asset unchanged into both gender folders at its required number.
+- Use this order for both genders:
+  1. Front — use a front-facing upper-body or medium portrait, normally framed from the head to the waist or upper hips. Keep the T-shirt as the clear center of attention and show its front silhouette and print area clearly, preferably from neckline through hem. Do not generate a full-body or near-full-body composition for this image; the knees, lower legs, and feet must remain outside the frame. Keep hands, arms, hair, props, and accessories from covering the main artwork.
+  2. Back — use a rear-facing upper-body or medium portrait, normally framed from the head to the waist or upper hips. Show the back of the T-shirt clearly, preferably from neckline through hem, including the complete back artwork when one is provided; when the back is meant to be blank, keep it completely blank. Do not generate a full-body or near-full-body composition for this image; the knees, lower legs, and feet must remain outside the frame. Keep hands, arms, hair, props, and accessories from covering the back print area. Hair may naturally touch or overlap the collar, neckline, shoulders, or other blank fabric without causing rejection or regeneration, provided it does not cover the artwork/print area or materially hide the T-shirt silhouette.
+  3. Side view (Side view doesn't mean complete side view, but should be side view and diff and natural pose will work which is pov from side, it should be naturally doing something)
+  4. Design closeup (Properly closeup zoomed enough onto design that design is visible in frame, design should be visible and focused) (Design Close-Up: Generate and compose the frame intentionally from approximately the chin and lower lip downward—not from the top of the head—so the T-shirt artwork is the dominant subject from the outset. This is an artwork-first camera close-up, not a T-shirt-centric upper-body view. Keep the artwork at its true garment scale and placement, but move the camera close enough that the complete design is displayed at the largest practical scale with only a narrow contextual fabric margin. For tall or large artwork, let its complete top and bottom nearly define the vertical framing; for a small chest design, frame tightly around that chest region. Sleeves, side seams, hands, trousers, broad blank-shirt areas, and large background areas should normally be outside the frame. Show only enough collar, shoulder, surrounding fabric, texture, and natural fold to prove the design is genuinely worn. Reject a candidate when excess side fabric, sleeves, body silhouette, or background makes the image primarily about the T-shirt rather than the artwork. Do not include the eyes, nose, forehead, or full head in the requested generation composition. Keep the print accurate to the original design, with no redrawing, spelling changes, distortion, missing elements, or altered colors. Use sharp focus, soft lighting, realistic cotton texture, and minimal natural folds so the print surface, ink edges, and fabric detail are visible. The design should not look distant, blurry, hidden by pose, awkwardly cropped, or placed outside the main visual frame. Validation tolerance is separate from generation intent: slight visibility of the chin, lips, nape, or a narrow lower-face edge is acceptable and must not trigger rejection or regeneration when the complete artwork remains large, sharp, readable, centered, unobstructed, and the clear primary subject. Reject facial inclusion only when it materially competes with the product, shows substantial face such as the eyes, nose, forehead, or full head, or weakens the required artwork close-up.)
+  5. Full-view natural pose — full or near-full body visible in a believable candid activity; must show the T-shirt silhouette and styling clearly without looking like a stiff product pose
+  6. Dedicated Fabric Detail Close-Up: Create a premium e-commerce product-detail mockup focused on the T-shirt’s material quality, comfort, and artwork presentation. The image should feel like a close-up product feature slide, not a normal model mockup. Use a cropped upper-body, chest, folded, or flat-lay composition where the supplied artwork remains complete, unchanged, recognizable, sharp, and unobstructed, while the fabric texture, collar/seam stitching, soft material feel, and natural shallow folds are clearly visible. Do not enlarge, redraw, replace, fragment, crop, recolor, or reinterpret the artwork. Add one clean circular magnifier inset in a safe empty area, connected with a thin line or subtle marker to the exact source area on the T-shirt. The circular magnifier inset must show a clearly zoomed macro view of the actual fabric from the same T-shirt, with visible cotton/cotton-blend texture, fine thread grain, knit pattern, and tactile surface detail. It should not look like a flat colored circle, smooth fabric patch, blur, or invented texture. The zoomed detail must visibly match the exact plain-fabric source area connected by the thin line or marker, and it must not point to or magnify the artwork. The inset must correspond visibly to the indicated source point and must not use invented texture. Use customer-friendly callout wording only. Include the exact main callout “100% COTTON” with related subtitle or use “COTTON BLEND” or another truthful material callout. The main callout must be clearly legible and slightly larger than supporting labels, but balanced and restrained so it does not dominate the image, compete with the artwork, or cover important T-shirt details. Supporting callouts may include truthful, minimal wording such as “SOFT COTTON TOUCH,” “BREATHABLE FEEL,” “SMOOTH FABRIC FINISH,” “NATURAL COTTON TEXTURE,” “ALL-DAY COMFORT,” “SOFT HAND FEEL,” or “EASY EVERYDAY WEAR.” A small bottom detail strip should be added with 2–3 clean infographic-style material points, each paired with a simple minimal line icon, such as “COTTON BLEND,” “SOFT TOUCH,” and “BREATHABLE FEEL.” Use visually appealing spacing, balanced typography, contrast color to overall image to not blend with it, visually visible, and subtle dividers if needed, while keeping the strip clean, premium, and uncluttered. Keep all callouts inside safe areas, away from the artwork and key garment details. Avoid technical or customer-unfriendly terms such as “ink,” “print surface,” “print edge,” “visible weave,” “sharp ink detail,” or similar production-focused wording. Also avoid unsupported claims, oversized typography, cluttered labels, generic promotional text, fake fabric texture, blurry zoom circles, or callouts that make the image look like a random poster instead of a refined e-commerce detail mockup.
+  - Model-free fabric-detail exception: When `06` is a model-free folded, flat-lay, or product-only composition, generate and validate only one shared source image for the batch, then copy that exact final JPEG unchanged to both `Men/06.jpg` and `Women/06.jpg`. Do not generate a separate women's or men's `06` in this case. This is optional: do not force a model-free detail image merely to save credits.
+  - Model-worn fabric-detail rule: When `06` visibly includes a model, it remains gender-specific. Generate separate men's and women's `06` images and preserve each gender’s locked model identity, essential styling, fit, and bottom-wear continuity whenever visible.
+  7. Shared fit-specific final size-chart template (`07.jpg`) selected directly from the approved template library
+- Every numbered product image, including `07.jpg`, must be exactly 1080 x 1440 pixels in a 3:4 portrait aspect ratio, without stretching. The approved final `07.jpg` templates are already prepared at that aspect ratio. Instagram assets use the separate dimensions defined in the Instagram section.
+- Compose and generate each image in its required final aspect ratio from the outset, with intentional safe space around all essential T-shirt details, artwork, hands, props, logo, and text. Never crop an already-generated image afterward to force the required dimensions or framing, as this can cut necessary content; only proportionally downscale a correctly framed source for export.
+- Save every final product image as a high-quality JPEG/JPG file. `07.jpg` is copied directly from its selected approved final JPEG template.
+- Do not create collages, contact sheets, minimaps, or grouped images. Treat and inspect every original design and output individually.
+- Render artwork through generative image editing so it follows the shirt's cotton texture, folds, lighting, curvature, and perspective. Do not paste artwork onto the shirt with deterministic compositing.
+- Generate every mockup and promotional asset with 4K-level source detail and photorealistic clarity before final export. Preserve sharp artwork edges, readable typography, realistic cotton weave, stitching, folds, lighting, skin, hair, and background detail without artificial oversharpening, halos, noise, or compression artifacts. The required delivery dimensions remain authoritative: every product image, including the selected final-template `07.jpg`, must be exactly 1080 x 1440 pixels; Instagram assets must use their specified final dimensions.
+
+## Seventh image: reusable size-chart template
+
+- Use only one shared approved raster template per batch. Do not generate, redesign, customize, or create separate men's and women's size-chart variants.
+- Approved template library, stored under `assets/size-charts/`:
+  - `Oversized T-Shirt Size Chart.jpg` for `oversized fit`.
+  - `Regular T-Shirt Size Chart.jpg` for `regular fit`.
+  - `POLO T-Shirt Size Chart.jpg` for `polo fit`.
+- Select the prepared final template matching the locked profile and validate its source path, SHA-256, exact 1080 x 1440 dimensions, visible title, and displayed measurements.
+- Do not add a TeeVybe logo, regenerate the chart, overlay any design-specific motif, crop, resize, stretch, re-encode, alter chart content, or otherwise customize an approved final template.
+- Do not use a different template for a batch merely for aesthetics. Use the profile-matched approved source above unless the user explicitly provides and approves a replacement template.
+- Copy the one validated final template byte-for-byte unchanged to both `Men/07.jpg` and `Women/07.jpg`; verify they are byte-identical to the selected source and to each other.
+- Template-library refresh exception: only after an explicit user request may the three reusable templates themselves be regenerated as crisp, natively composed 1080 x 1440 raster JPEGs. Validate every title, table value, note, safe margin, and 3:4 composition before replacing a library template. This is a one-time library-maintenance action, never a per-design batch action.
+
+## Folder and filename structure
+
+- Create one clean delivery folder for each batch. Don't include Batch term in folder naming, folder naming should be without underscores, and should be related to design, and should also have fit type in name.
+- Inside every batch folder, create exactly these gender folders:
+  - `Men/`
+  - `Women/`
+- Store each gender's seven numbered product files in its corresponding folder.
+- Use numeric filenames in the established view order:
+  - `01.jpg`
+  - `02.jpg`
+  - `03.jpg`
+  - `04.jpg`
+  - `05.jpg`
+  - `06.jpg`
+  - `07.jpg`
+
+## Brand logo treatment
+
+- This rule applies to every TeeVybe logo use, including Instagram Posts, Instagram Stories, and any future branded asset. It does not apply to reusable `07.jpg` size-chart template exports, which must not add a logo.
+- Always use the official `logo.png` as a transparent-background logo. Remove or exclude the source image's white background before placement.
+- Treat the TeeVybe logo as a fixed brand-identity raster asset, not as generative image content. Generate the underlying mockup or branded composition without asking the image model to recreate, interpret, redraw, or typeset the logo; then place the official transparent `logo.png` onto the finished raster composition through non-generative raster compositing.
+- Preserve the logo from its highest-quality source and resize it only once using high-quality resampling. Keep it large enough that its thin red strokes remain clearly resolved at the final delivery dimensions, and avoid repeated scaling, artificial sharpening, or unnecessary recompression. If the supplied raster source is visibly soft, pixelated, or insufficient for a clear 4K-level branded asset, first create a faithful high-resolution reconstruction of the same logo from the official source as a clean raster asset. The reconstruction must preserve the exact mark, lettering, proportions, spacing, red color, and transparent background; it must not introduce stylistic changes, extra effects, or invented details. Validate the reconstructed logo at high resolution before resizing it once for placement.
+- Apply the logo before the final JPEG export and perform only one high-quality JPEG encoding pass afterward. Never extract or reuse the logo from a previously compressed mockup, generated image, screenshot, thumbnail, or JPEG.
+- Place only the red logo artwork directly over the destination design. Never place the logo inside or on top of a white rectangle, colored panel, badge, card, border, outline, frame, container, or artificial background of any kind.
+- Preserve the logo's original proportions and red color. Do not alter, distort, crop, add effects, or repeat it. Redrawing is prohibited as creative reinterpretation, but a faithful high-resolution reconstruction is permitted only when needed to correct inadequate source quality and only when it is directly validated against the official logo.
+- Choose a naturally clean, sufficiently contrasting area of the composition so the transparent logo remains clearly visible. Slight enlargement and clean upscaling are allowed when needed for legibility.
+- Inspect every branded output individually and reject it if any visible box, background patch, border, halo, matte, or low-contrast placement appears around the logo.
+
+<!-- Instagram content requirements are temporarily inactive. Preserve this block for future use; do not generate Instagram assets unless the user explicitly asks to reactivate it.
+
+## Instagram content (In separate Instagram folder)
+- Generate every Instagram Post and Story from a clear, highly detailed 4K-quality source before final export. The model, T-shirt, supplied artwork, promotional typography, and TeeVybe logo must remain sharp, clean, and properly resolved, with realistic fabric, skin, hair, lighting, and background detail. Reject blurry, soft, pixelated, noisy, smeared, low-resolution, overcompressed, artificially sharpened, or visibly upscaled results. Downscale cleanly to the required Instagram dimensions without stretching, distortion, halos, jagged edges, or loss of artwork and text clarity.
+- Export each Instagram portrait post at exactly 1080 x 1350 pixels in a 4:5 portrait aspect ratio, without stretching.
+- Export each Instagram Story at exactly 1080 x 1920 pixels in a 9:16 portrait aspect ratio, without stretching.
+- One creative instagram portrait post and one story image at end, despite genders, should have creative texts just like how posts have, don't combine both genders in image.
+- For every product, create one creative Instagram portrait post and one Instagram Story image at the end. This requirement applies to each gender separately. Do not combine male and female models or both genders in the same image.
+- Both the portrait post and the Story image should include creative, well-placed promotional text that complements the product, similar to professionally designed Instagram posts. Keep the text visually engaging, relevant to the T-shirt, and integrated into the composition without obscuring the design. And shouldn't look like another mockup
+- Always save this content in separate Instagram folder in gender folder
+- Use the official TeeVybe logo asset stored beside this file as `logo.png` for Instagram content. Follow the global transparent-logo treatment rules above without exception.
+- Include creative, well-placed promotional text similar to professionally designed Instagram content.
+- Use text specifically related to the T-shirt’s artwork, theme, concept, or design—not generic promotional copy.
+- Make the text feel relevant to the product and visually integrated into the composition.
+- Also not consistently, but you can add placeholder related the character the design theme relates to if there is, behind, in a way that doesn't spoil visually
+- The placement of logo should be in proper space, in contrast to our logo color, it should be visible, and shouldn't blend with background space where it is placed (like in dark background our logo isn't properly visible due to its non thickness and smaller size)
+- You may slightly increase the size of logo, and increase the quality of it to make it properly visible
+-->

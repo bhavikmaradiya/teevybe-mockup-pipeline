@@ -1,0 +1,6 @@
+interface:
+  display_name: "TeeVybe Mockup Pipeline"
+  short_description: "Run gated TeeVybe mockup batches"
+  default_prompt: "Use $tee-mockup-pipeline to create and validate this TeeVybe T-shirt mockup batch."
+policy:
+  allow_implicit_invocation: true

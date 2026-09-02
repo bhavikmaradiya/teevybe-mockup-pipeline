@@ -1,0 +1,36 @@
+# Model Routing
+
+Use persistent role agents and route by decision type. Model names and reasoning levels are requested overrides; if a runtime does not expose an override, report the fallback before continuing and preserve the boundaries below.
+
+## Coordinator
+
+- Model: `gpt-5.6-terra`
+- Reasoning: `medium`
+- Owns: rule rereads and hashes, batch-lock approval, stage order, specialist handoffs, stale-state detection, retry stopping conditions, and final delivery decision.
+- Must not: overrule a failed visual audit, perform image generation merely because a specialist is unavailable, or approve delivery without both current audits.
+
+If the parent task is not Terra Medium, create one persistent Terra Medium coordinator. The parent remains a thin dispatcher for spawning, messaging, waiting, and executing approved tool calls. Do not create a fresh coordinator at each stage.
+
+## Visual Director
+
+- Model: `gpt-5.6-sol`
+- Reasoning: `medium`
+- Owns: original-image analysis, front/back and fit interpretation, visual lock fields, image-generation prompts and calls, model identity, styling, artwork fidelity, fit silhouette, scene continuity, composition, fabric detail, selected reusable-template visual validation, logo appearance where applicable, and file-by-file visual audit.
+- Must not: mechanically copy shared files, draw charts with code, use deterministic T-shirt artwork compositing, or delegate visual acceptance to Operations QA.
+
+The dedicated image-generation tool renders pixels. Sol Medium supplies the visual reasoning, prompt constraints, referenced images, and acceptance decisions.
+
+## Operations QA
+
+- Model: `gpt-5.6-luna`
+- Reasoning: `low`
+- Owns: directory creation, numeric filenames, file counts, JPEG/PNG MIME checks, exact dimensions, SHA-256, permitted byte-identical copy of accepted shared assets and selected-template `07.jpg` exports, manifest/history updates, final JPEG export, running the read-only delivery verifier, and mirroring an approved final batch to a configured Google Drive root.
+- Must not: generate or edit mockup imagery or T-shirt artwork, infer design sides or fit, judge identity or artwork quality, choose a background, choose or alter logo placement, create a size chart, or claim visual acceptance. For `07.jpg`, it may only copy and hash the approved final template; it must not add a logo, crop, resize, stretch, re-encode, or customize the chart. For Drive it must only create the approved new hierarchy and upload approved final assets; it must not overwrite, duplicate, rename, move, delete, or modify sharing, and it must stop on a collision or partial failure.
+
+## Escalation
+
+- Mechanical uncertainty stays with Operations QA and escalates to the Coordinator.
+- Any question requiring looking at image content goes to the Visual Director.
+- Product-rule ambiguity goes to the Coordinator, who rereads `AGENTS.md` and asks the user only when the answer is not discoverable.
+- A specialist failure does not authorize another role to assume its prohibited work.
+- Reuse existing role agents via follow-up messages. Spawn a replacement only when an agent is unavailable or its context is irrecoverably stale, and provide the complete current lock and hash to the replacement.

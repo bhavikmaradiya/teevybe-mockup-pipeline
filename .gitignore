@@ -1,0 +1,19 @@
+.DS_Store
+**/.DS_Store
+
+# Local secrets and machine-specific configuration
+.env
+.env.*
+*.pem
+*.key
+.codex/config.toml
+
+# Generated run state and mockup deliveries
+work/
+/* Oversized/
+/* Regular Fit/
+/* Polo Fit/
+
+# Temporary exports
+*.zip
+*.tmp
