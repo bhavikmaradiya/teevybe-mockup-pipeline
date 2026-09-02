@@ -8,18 +8,18 @@ The scheduled task must receive these values; never guess them:
 
 ```yaml
 drive_intake_folder_id: "user-approved Google Drive folder ID"
+drive_state_folder_id: "user-approved separate Google Drive state folder ID"
 intake_timezone: "Asia/Kolkata"
 intake_date: "today in intake_timezone unless the user supplies another date"
 github_repository: "bhavikmaradiya/teevybe-mockup-pipeline"
 github_default_branch: "main"
-github_ledger_path: "cloud-state/drive-intake-history.jsonl"
 ```
 
-The Drive folder ID authorizes read-only discovery from that folder. It does not authorize changes to the folder, its contents, or sharing.
+The intake folder ID authorizes read-only discovery from that folder. It does not authorize changes to the folder, its contents, or sharing. The state folder is a separate private location used only for durable processing markers; it must never be the intake folder or the delivery root.
 
-For a web/cloud recurring Scheduled task, use the connected GitHub tool to access the configured public repository. Do not assume a persistent checkout, local repository, shell Git access, or general internet access. Before any Drive scan, use the connected GitHub tool to read the latest `github_default_branch` versions of `AGENTS.md`, `CLOUD_RUNBOOK.md`, `.codex/skills/tee-mockup-pipeline/SKILL.md`, every reference required for the run, and `github_ledger_path`. Confirm that the repository contents are readable and that the connected GitHub account is authorized to create a normal commit updating only the ledger. Public read access does not grant ledger-write access. If either read or ledger-write capability is unavailable, stop before spending generation credits.
+For a web/cloud recurring Scheduled task, use the connected GitHub tool only to read the configured public repository. Do not assume a persistent checkout, local repository, shell Git access, GitHub write access, or general internet access. Before any Drive scan, use the connected GitHub tool to read the latest `github_default_branch` versions of `AGENTS.md`, `CLOUD_RUNBOOK.md`, `.codex/skills/tee-mockup-pipeline/SKILL.md`, and every reference required for the run. Confirm that the repository contents are readable. GitHub commit access is not required because queue state is stored in the separate Drive state folder.
 
-Every scheduled run is independent. It must reread the latest repository instructions and ledger from GitHub at startup; never rely on files or state retained from a prior scheduled chat.
+Every scheduled run is independent. It must reread the latest repository instructions from GitHub and the current processing markers from Drive at startup; never rely on files or state retained from a prior scheduled chat.
 
 ## Flat-folder discovery for today's images
 
@@ -46,71 +46,55 @@ For every selected image, the Visual Director must:
 
 Never group more than two images into one design. Never infer a pair from a shared generic name such as `Photo 1`/`Photo 2`, a common model, or a common T-shirt color without confirming the actual product relationship visually. Never treat the trailing `1` in a legitimate design name as automatically being a sequence marker.
 
-If two or more plausible groupings remain after individual inspection, or the side/product relationship is uncertain, record those files as `blocked` with `ambiguous-grouping` and stop them before generation. Continue to another clearly resolved design only after the blocked ledger event is durably committed through the connected GitHub tool and confirmed by readback.
+If two or more plausible groupings remain after individual inspection, or the side/product relationship is uncertain, record those source fingerprints as blocked with `ambiguous-grouping` in the Drive state folder and stop them before generation. Continue to another clearly resolved design only after the blocked marker is confirmed by Drive readback.
 
-## GitHub processing ledger
+## Drive processing ledger
 
-Use the tracked append-only JSON Lines file at `cloud-state/drive-intake-history.jsonl` on the latest `main` branch of `bhavikmaradiya/teevybe-mockup-pipeline`. This file is the cross-run source of truth for whether a Drive input group has been processed. Read and update it through the connected GitHub tool. Do not use an ephemeral checkout, local-only `work/` state, Drive moves, filename changes, or output-folder guesses as the processing record.
+Use the configured separate `drive_state_folder_id` as the cross-run source of truth for whether an intake group has been processed. Use Drive folders as zero-byte durable markers so queue state does not depend on GitHub write access or consume file-storage quota. Do not use an ephemeral checkout, local-only `work/` state, source-file moves, filename changes, or output-folder guesses as the processing record.
 
-Every event after the initialization record must contain:
+The state hierarchy is:
 
-```json
-{
-  "event": "claimed|delivered|blocked",
-  "recorded_at": "ISO-8601 timestamp",
-  "intake_date": "YYYY-MM-DD",
-  "intake_timezone": "Asia/Kolkata",
-  "drive_intake_folder_id": "observed folder ID",
-  "design_group_id": "stable SHA-256 of the sorted source fingerprints",
-  "source_files": [
-    {
-      "drive_file_id": "observed ID",
-      "name": "observed filename",
-      "side": "front|back",
-      "mime_type": "observed MIME type",
-      "created_time": "observed Drive value",
-      "modified_time": "observed Drive value",
-      "size_bytes": null,
-      "checksum": "observed checksum when available",
-      "source_fingerprint": "SHA-256 of the canonical observed source identity"
-    }
-  ],
-  "batch_id": "",
-  "delivery_folder": "",
-  "reason": ""
-}
+```text
+<state-root>/
+  ledger-initialized--v1/
+  group--<design_group_id>/
+    source--front--<Drive-file-id>--<source-fingerprint>/
+    source--back--<Drive-file-id>--<source-fingerprint>/   # only for a verified pair
+    event--<UTC-basic-timestamp>--claimed--<batch-id>/
+    event--<UTC-basic-timestamp>--delivered--<batch-id>/
+    event--<UTC-basic-timestamp>--blocked--<reason-token>/
+  blocked-source--<Drive-file-id>--<source-fingerprint>--ambiguous-grouping/
 ```
 
-Build each source fingerprint from the observed Drive file ID, created time, modified time, size, and available checksum. Build `design_group_id` from the sorted source fingerprints. Never use filenames alone as identity.
+The single initialization marker identifies the schema version and is not a processed design. Use filesystem-safe lowercase tokens in marker names. Build each source fingerprint from the observed Drive file ID, created time, modified time, size, and available checksum. Build `design_group_id` from the sorted source fingerprints. Never use filenames alone as identity. The observed source filename and metadata remain in the run scan report; the durable markers intentionally store only stable IDs, fingerprints, side, status, timestamp, batch ID, and a concise reason token.
 
 For each resolved group:
 
-- No ledger event for its `design_group_id`: `unprocessed`.
-- Latest event is `delivered`: skip permanently.
-- Latest event is `blocked`: skip until the user explicitly resolves or resubmits it.
-- Latest event is `claimed` without a later terminal event: treat it as an interrupted run; do not automatically regenerate it.
+- No matching group marker: `unprocessed`.
+- A `delivered` event exists: skip permanently.
+- The latest event is `blocked`: skip until the user explicitly resolves or resubmits it.
+- A `claimed` event exists without a later terminal event: treat it as an interrupted run; do not automatically regenerate it.
 
-If a source file ID already belongs to a delivered group but its fingerprint has changed, treat it as a revised prior input and block it for explicit user confirmation instead of silently creating a second batch.
+If a source file ID already appears in a delivered group's source marker but its fingerprint has changed, treat it as a revised prior input and create a blocked-source marker for explicit user confirmation instead of silently creating a second batch.
 
-## Connector-based atomic claim and terminal commits
+## Connector-based claim and terminal markers
 
 Process only one design group at a time and use only one scheduled worker for the intake folder.
 
 Before the first generation call for a group:
 
-1. Through the connected GitHub tool, reread the ledger from the latest `main` revision and retain its observed file revision or commit SHA.
-2. Confirm the group is still unprocessed.
-3. Append its `claimed` event without changing or rewriting earlier JSONL records.
-4. Use the connected GitHub tool's file-update or commit operation to create a normal `main` commit changing only the ledger, with a message containing the design-group ID. Supply the observed revision/SHA as a concurrency guard when the tool supports one.
-5. Require the tool's successful commit result, then read back the ledger from GitHub and confirm the event and resulting commit SHA before generation.
+1. List the state root immediately before claiming and confirm that no `group--<design_group_id>` marker exists.
+2. Create `group--<design_group_id>` directly under the state root.
+3. Create its one or two exact source-marker child folders, then its `claimed` event child folder.
+4. List the state root again and require exactly one matching group marker. List that group and confirm every expected source marker plus the claimed event before generation.
 
-If the connector rejects the update, reports a conflict, or cannot create commits, do not generate. Reread the latest remote ledger through the connector; if another run claimed the group, skip it. Never use shell `git`, raw network cloning, force-push, history rewriting, or an ephemeral local ledger as a workaround.
+If any create or readback fails, if a duplicate matching group folder is observed, or if the connector cannot create Drive folders, do not generate. Reread the state root; if another run claimed the group, skip it. Never use GitHub commits, shell Git, source-folder markers, output-folder guesses, or an ephemeral local ledger as a workaround. The single-worker requirement is mandatory because Google Drive folder names are not an atomic uniqueness constraint.
 
-After complete pipeline approval and durable output persistence, append `delivered` through the same connector transaction and confirm it by GitHub readback. If ambiguity, repeated critical failure, or another terminal blocker stops the design after GitHub write capability has been confirmed, append `blocked` with the exact reason and confirm it by readback before selecting another design. If GitHub write capability itself is missing, stop before claiming or generating and report that infrastructure blocker; do not pretend it was durably recorded.
+After complete pipeline approval and verified Drive output persistence, create the `delivered` event child and confirm it by group-folder readback. If ambiguity, repeated critical failure, or another terminal blocker stops a claimed design, create a `blocked` event child with the exact concise reason token and confirm it before selecting another design.
 
-A scheduled run must not finish successfully while a group it claimed lacks a terminal event durably committed to GitHub. An interrupted `claimed` group requires manual recovery or explicit user authorization to resume.
+A scheduled run must not finish successfully while a group it claimed lacks a terminal marker in Drive. An interrupted claimed group requires manual recovery or explicit user authorization to resume.
 
-The GitHub ledger stores metadata and status only. Do not commit source images, generated candidates, delivery JPEGs, credentials, or `work/` state unless the user separately changes the repository policy.
+The state root stores processing markers only. Do not upload source images, generated candidates, delivery JPEGs, credentials, or `work/` state there. Approved final JPEGs belong only under the separate destination governed by `drive-publish.md`.
 
 ## Per-design handoff
 
