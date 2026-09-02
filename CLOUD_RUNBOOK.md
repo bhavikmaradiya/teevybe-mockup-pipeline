@@ -46,6 +46,8 @@ Before beginning a run, verify that the cloud environment has:
 
 Repository contents do not grant tool access, account access, credentials, installed-skill availability, or persistent storage. A web/cloud recurring Scheduled task must not assume it retains a checkout or filesystem state from an earlier run. A local `/tmp` or Downloads path from another device is not a cloud-accessible reference. If a required capability, input, or permission is missing, stop before generation and report the blocker.
 
+A blocker applies only to the current execution. Never pause, disable, delete, or alter the recurrence or notification settings of the Scheduled task unless the user explicitly requests that automation change.
+
 ## Cloud input handoff
 
 Supply the task with the user's request exactly as given, including:
@@ -75,7 +77,7 @@ If persistent Terra/Luna agent spawning is unavailable but Sol and the remaining
 
 Process only one resolved design group at a time. Pass its original Drive sources and the runtime configuration above into the complete tee-mockup-pipeline workflow. Follow the tracked files directly for all roles, records, stage gates, generation, validation, retry control, export, delivery, publishing, and Drive terminal-marker behavior. Reread AGENTS.md wherever required and use its current recorded hash throughout the run.
 
-If there are no eligible unprocessed images today, finish with a no-input report and make no generation calls. If a required repository instruction, input, grouping decision, model or role capability, image tool, connected-GitHub read operation, Drive state/publish operation, credential, permission, sufficient Drive storage, or durable output location is unavailable, follow the applicable tracked blocker procedure. Do not improvise a reduced workflow, modify Drive source files, use shell Git or attempt GitHub writes, or claim delivery before all required approvals and verification pass.
+If there are no eligible unprocessed images today, finish with a no-input report and make no generation calls. If a required repository instruction, input, grouping decision, model or role capability, image tool, connected-GitHub read operation, Drive state/publish operation, credential, permission, sufficient Drive storage, or durable output location is unavailable, follow the applicable tracked blocker procedure for that execution only. Do not pause, disable, delete, or change the recurring Scheduled task unless the user explicitly asks. Do not improvise a reduced workflow, modify Drive source files, use shell Git or attempt GitHub writes, or claim delivery before all required approvals and verification pass.
 ```
 
 Do not attach duplicate source images to this scheduled prompt; the configured Drive folder is the intake. Do not paste shortened copies of repository rules into the task.
