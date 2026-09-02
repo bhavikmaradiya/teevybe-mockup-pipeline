@@ -4,11 +4,11 @@ Use this reference only when a cloud or scheduled run discovers source images fr
 
 ## Required configuration
 
-The scheduled task must receive these values; never guess them:
+Use this tracked configuration unless the user explicitly replaces it:
 
 ```yaml
-drive_intake_folder_id: "user-approved Google Drive folder ID"
-drive_state_folder_id: "user-approved separate Google Drive state folder ID"
+drive_intake_folder_id: "1bOf_WaMxD9KYyzLhGQhhUgwucpZknzlz"
+drive_state_folder_id: "1OS8ydBhiqa9695wYfVp1airl4rFNyL_i"
 intake_timezone: "Asia/Kolkata"
 intake_date: "today in intake_timezone unless the user supplies another date"
 github_repository: "bhavikmaradiya/teevybe-mockup-pipeline"

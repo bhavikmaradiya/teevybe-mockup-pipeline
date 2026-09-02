@@ -57,23 +57,12 @@ Do not rewrite the user's request into inferred product rules. The complete repo
 
 ## Ready-to-use cloud or scheduled task prompt
 
-Replace `<DRIVE_INTAKE_FOLDER_ID>`, `<DRIVE_STATE_FOLDER_ID>`, `<DRIVE_DELIVERY_ROOT_ID>`, and `<CONFIRMED_MATERIAL>` before saving the task. Keep these private Drive IDs in the task configuration rather than committing them to this public repository. The default fit below is oversized; change that single value only when the scheduled intake is for another fit.
+The Drive intake, processing-state, and delivery-root IDs are tracked in `drive-intake.md` and `drive-publish.md`; do not repeat them in the scheduled prompt. The default fit below is oversized; change that single value only when the scheduled intake is for another fit.
 
 ```text
 Use the connected GitHub tool to open the public repository bhavikmaradiya/teevybe-mockup-pipeline at its main branch, then run the TeeVybe cloud mockup intake. If $tee-mockup-pipeline is exposed as an available skill in this scheduled chat, invoke it. In every case, read and follow its latest tracked SKILL.md and required references from that repository. Do not assume a persistent checkout or use shell Git.
 
-Runtime configuration:
-- Google Drive intake folder ID: <DRIVE_INTAKE_FOLDER_ID>
-- The intake folder is flat; source filenames must remain unchanged.
-- Google Drive processing-state folder ID: <DRIVE_STATE_FOLDER_ID>.
-- The state folder is separate from intake and stores only the durable folder markers defined by drive-intake.md.
-- Google Drive delivery root folder ID: <DRIVE_DELIVERY_ROOT_ID>.
-- Intake date: today in Asia/Kolkata.
-- Default user-requested fit for every discovered design: oversized fit.
-- Confirmed truthful material callout: <CONFIRMED_MATERIAL>.
-- GitHub repository: bhavikmaradiya/teevybe-mockup-pipeline.
-- GitHub branch: main.
-- After a batch passes every required approval and audit, publish it to the configured destination governed by drive-publish.md.
+Use the tracked Drive configuration in drive-intake.md and drive-publish.md. The intake folder is flat and source filenames must remain unchanged. Process images created today in Asia/Kolkata, use oversized fit by default, and use the confirmed truthful material callout `100% COTTON`. After a batch passes every required approval and audit, publish it to the tracked destination governed by drive-publish.md.
 
 Before taking any Drive or batch action, use the connected GitHub tool to read the complete latest main-branch contents of repository-root AGENTS.md, CLOUD_RUNBOOK.md, and .codex/skills/tee-mockup-pipeline/SKILL.md. Read every repository reference required by the skill for this run, including workflow.md, agent-contracts.md, model-routing.md, drive-intake.md, and drive-publish.md. Treat AGENTS.md as the live and sole source of product rules. GitHub is read-only in this cloud workflow; do not require or attempt a commit. Do not replace any tracked instruction with this prompt, a summary, remembered instructions, or inferred rules. Repeat this repository read on every scheduled run because scheduled chats do not share a persistent working copy.
 
