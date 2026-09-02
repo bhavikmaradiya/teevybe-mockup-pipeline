@@ -6,6 +6,7 @@ Portable Codex project for creating and validating staged TeeVybe T-shirt mockup
 
 - `AGENTS.md` — live, authoritative product and mockup rules.
 - `.codex/skills/tee-mockup-pipeline/` — project-local skill, persistent-role routing, workflow gates, handoff contracts, Drive publishing rules, and verifier.
+- `CLOUD_RUNBOOK.md` — cloud capability gate, durable-input contract, execution sequence, persistence rules, and a ready-to-use scheduled-task prompt.
 - `assets/size-charts/` — the three approved reusable 1080 × 1440 size-chart templates.
 - `scripts/verify-delivery.sh` — final read-only delivery audit.
 
@@ -33,6 +34,8 @@ The repository makes the instructions, role contracts, scripts, and approved cha
 - separately configured credentials for optional Drive publishing.
 
 Use a local scheduled task when the run depends on this Mac’s image-generation tools or local files. Use a cloud task only after confirming the cloud environment exposes the same required capabilities.
+
+Follow `CLOUD_RUNBOOK.md` for the complete cloud startup and execution process. Its prompt template is designed to point back to the live `AGENTS.md` rather than duplicating the product rules.
 
 ## Safe updates
 
