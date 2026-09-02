@@ -108,7 +108,7 @@ After handoff, follow the complete current `AGENTS.md`, `SKILL.md`, `workflow.md
 
 - Keep the Drive intake folder and every source file read-only.
 - Do not rename, move, delete, overwrite, share, reorganize, or mark source files in Drive.
-- Do not create completion markers inside Drive.
+- Do not create completion or processing markers inside the Drive intake folder. Create them only in the separately configured Drive state folder according to the ledger rules above.
 - Drive output publishing is a separate post-approval stage governed only by `drive-publish.md`.
 
 ## Scan record
