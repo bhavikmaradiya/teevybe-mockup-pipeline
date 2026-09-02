@@ -2,6 +2,16 @@
 
 Use persistent role agents and route by decision type. Model names and reasoning levels are requested overrides; if a runtime does not expose an override, report the fallback before continuing and preserve the boundaries below.
 
+## Web/cloud Scheduled-task Sol fallback
+
+When a web/cloud Scheduled task exposes a capable Sol model and the required image/files/connectors but cannot spawn persistent Terra or Luna agents, do not stop merely because multi-agent spawning or those model routes are unavailable. Disclose the fallback once and use the single Sol session to execute three sequential logical roles:
+
+1. **Coordinator phase:** reread and hash the current rules, maintain the batch lock, enforce stage order and stopping conditions, and authorize the next phase.
+2. **Visual Director phase:** inspect original and generated pixels and make every visual decision. Record a Visual Director stage result before leaving the phase.
+3. **Operations QA phase:** perform only deterministic filesystem, filename, MIME, dimensions, checksum, byte-copy, ledger, and publishing checks. Record a separate Operations QA result based on observed tool output, never on the prior visual conclusion.
+
+The same Sol session may change logical roles only at an explicit phase boundary. It must not merge the visual and mechanical reports, let one report stand in for the other, skip the final file-by-file visual audit, or approve delivery while either report fails or is stale. Use available deterministic tools/scripts for Operations QA. This cloud-only fallback preserves role boundaries but does not claim independent-agent review. It is not permitted for a local/project run where the normal persistent topology is available.
+
 ## Coordinator
 
 - Model: `gpt-5.6-terra`
@@ -9,7 +19,7 @@ Use persistent role agents and route by decision type. Model names and reasoning
 - Owns: rule rereads and hashes, batch-lock approval, stage order, specialist handoffs, stale-state detection, retry stopping conditions, and final delivery decision.
 - Must not: overrule a failed visual audit, perform image generation merely because a specialist is unavailable, or approve delivery without both current audits.
 
-If the parent task is not Terra Medium, create one persistent Terra Medium coordinator. The parent remains a thin dispatcher for spawning, messaging, waiting, and executing approved tool calls. Do not create a fresh coordinator at each stage.
+For local/project runs, if the parent task is not Terra Medium, create one persistent Terra Medium coordinator. The parent remains a thin dispatcher for spawning, messaging, waiting, and executing approved tool calls. Do not create a fresh coordinator at each stage. For eligible web/cloud Scheduled tasks, use the disclosed Sol fallback above when persistent spawning is unavailable.
 
 ## Visual Director
 

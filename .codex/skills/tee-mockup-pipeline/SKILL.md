@@ -27,7 +27,9 @@ Keep one persistent agent per role for the whole batch; never spawn an agent per
 - Visual Director: `gpt-5.6-sol`, medium reasoning. Owns image/reference analysis, generation prompts, image-generation tool use, and every visual acceptance decision.
 - Operations QA: `gpt-5.6-luna`, low reasoning. Owns deterministic folders, names, dimensions, formats, checksums, permitted shared-file copies, mechanical reports, and approved post-delivery Drive mirroring.
 
-If the invoking agent cannot run as Terra Medium, it must spawn a persistent Terra Medium coordinator and act as a thin dispatcher. The dispatcher may execute tool calls requested by the coordinator but must not bypass coordinator gates. When runtime model overrides are unavailable, keep the same role boundaries, disclose the fallback, and do not silently substitute visual judgment with a lightweight model.
+For local/project runs, if the invoking agent cannot run as Terra Medium, it must spawn a persistent Terra Medium coordinator and act as a thin dispatcher. The dispatcher may execute tool calls requested by the coordinator but must not bypass coordinator gates.
+
+For a web/cloud Scheduled task that exposes Sol but cannot spawn persistent Terra/Luna role agents, use the cloud-only Sol fallback defined in [references/model-routing.md](references/model-routing.md). One Sol session may execute the Coordinator, Visual Director, and Operations QA as sequential logical roles, but it must keep their decisions and reports separate, run all deterministic mechanical checks, and may not use a visual conclusion as mechanical proof or vice versa. Disclose this fallback once at startup. Missing Terra/Luna spawning alone is not a capability-gate failure in this mode. This exception does not apply to local/project runs and does not relax any `AGENTS.md` product rule, stage gate, retry control, artwork check, or final audit.
 
 ## Hard boundaries
 

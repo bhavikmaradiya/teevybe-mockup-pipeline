@@ -38,7 +38,7 @@ Before beginning a run, verify that the cloud environment has:
 - access to every supplied reference through a durable cloud attachment or storage path;
 - a configured flat Google Drive intake folder and the tracked GitHub ledger when Drive discovery is enabled;
 - the image-generation and generative-editing capabilities required by the skill;
-- support for the models and persistent role agents required by `model-routing.md`, or an explicitly disclosed runtime fallback that preserves all role boundaries;
+- either the normal persistent role-agent topology or a Sol session capable of using the explicit cloud-only fallback in `model-routing.md`;
 - persistent storage for delivery files and required run state when the checkout is temporary; and
 - separately configured credentials and permissions for any optional external publishing destination.
 
@@ -77,6 +77,8 @@ Runtime configuration:
 Before taking any Drive, GitHub-ledger, or batch action, use the connected GitHub tool to read the complete latest main-branch contents of repository-root AGENTS.md, CLOUD_RUNBOOK.md, and .codex/skills/tee-mockup-pipeline/SKILL.md. Read every repository reference required by the skill for this run, including workflow.md, agent-contracts.md, model-routing.md, drive-intake.md, and drive-publish.md. Treat AGENTS.md as the live and sole source of product rules. Do not replace any tracked instruction with this prompt, a summary, remembered instructions, or inferred rules. Repeat this repository read on every scheduled run because scheduled chats do not share a persistent working copy.
 
 Verify the cloud capability gate before spending image-generation credits. Follow drive-intake.md exactly to scan today's direct image files in the configured flat Drive folder, inspect them individually, resolve one-image designs or verified two-image design groups, and consult the GitHub ledger. Use only the connected GitHub tool to reread and commit the required claimed and terminal ledger events; require commit confirmation and readback before proceeding. Never process a group whose latest ledger state prevents automatic processing.
+
+If persistent Terra/Luna agent spawning is unavailable but Sol and the remaining required tools are available, disclose and use the cloud-only Sol fallback in model-routing.md. Execute Coordinator, Visual Director, and Operations QA as sequential logical phases with separate records and deterministic mechanical checks. Do not stop solely because Terra/Luna spawning is unavailable, and do not apply this fallback to any other missing capability.
 
 Process only one resolved design group at a time. Pass its original Drive sources and the runtime configuration above into the complete tee-mockup-pipeline workflow. Follow the tracked files directly for all roles, records, stage gates, generation, validation, retry control, export, delivery, publishing, and terminal-ledger behavior. Reread AGENTS.md wherever required and use its current recorded hash throughout the run.
 

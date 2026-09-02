@@ -20,7 +20,9 @@ The environment is one coherent family for the batch. Before it is locked, the V
 
 ## 2. Persistent agent setup
 
-Spawn or reuse exactly one Coordinator, one Visual Director, and one Operations QA. Send each role the current rule path, rule hash, batch-lock path, role boundaries, and current stage. Reuse these agents through subsequent messages so accepted identity and state are not lost.
+For local/project runs, spawn or reuse exactly one Coordinator, one Visual Director, and one Operations QA. Send each role the current rule path, rule hash, batch-lock path, role boundaries, and current stage. Reuse these agents through subsequent messages so accepted identity and state are not lost.
+
+For a web/cloud Scheduled task where persistent Terra/Luna spawning is unavailable, apply the cloud-only Sol fallback in `model-routing.md`: keep one Sol session for the run, execute the three roles sequentially at explicit phase boundaries, and write separate Coordinator, Visual Director, and Operations QA records. Do not treat unavailable spawning alone as a blocker. All other capability gates remain mandatory.
 
 Do not run competing visual generations in parallel. Operations QA may inspect an already accepted asset while the Visual Director works on the next gated asset, provided both use the same current rule hash.
 
