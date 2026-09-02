@@ -27,8 +27,9 @@ If the Codex installation does not discover project-local skills, copy `.codex/s
 
 The repository makes the instructions, role contracts, scripts, and approved chart assets portable, but it does not grant cloud tools or credentials. A scheduled/cloud run must provide:
 
-- repository access and a writable checkout;
-- private-repository push permission when the cloud Drive intake ledger is enabled;
+- a connected GitHub tool authorized to read `bhavikmaradiya/teevybe-mockup-pipeline` on `main`;
+- connected-GitHub file-write/commit permission for the tracked intake ledger when cloud Drive intake is enabled;
+- either the project pipeline skill available to the scheduled chat or connected-GitHub read access to its complete tracked skill and references;
 - the reference artwork in a cloud-accessible location (never a temporary path from another device);
 - image-generation/editing capability;
 - support for the coordinator, visual-director, and operations-QA role boundaries required by the skill;
