@@ -32,7 +32,7 @@ If any instruction conflicts, is unclear, or appears incomplete, reread the full
 
 Before beginning a run, verify that the cloud environment has:
 
-- the connected GitHub tool authorized to read the private repository `bhavikmaradiya/teevybe-mockup-pipeline` and its `main` branch;
+- GitHub read access to the public repository `bhavikmaradiya/teevybe-mockup-pipeline` and its `main` branch;
 - connected-GitHub file-write/commit capability for `cloud-state/drive-intake-history.jsonl` when Drive discovery is enabled;
 - either the `$tee-mockup-pipeline` skill available to the scheduled chat or connected-GitHub read access to its complete tracked `SKILL.md` and required references; when the skill is exposed by name, invoke it, but always ground the run in the latest repository copies;
 - access to every supplied reference through a durable cloud attachment or storage path;
@@ -61,7 +61,7 @@ Do not rewrite the user's request into inferred product rules. The complete repo
 Replace only `<DRIVE_INTAKE_FOLDER_ID>` and `<CONFIRMED_MATERIAL>` before saving the task. The default fit below is oversized; change that single value only when the scheduled intake is for another fit.
 
 ```text
-Use the connected GitHub tool to open the private repository bhavikmaradiya/teevybe-mockup-pipeline at its main branch, then run the TeeVybe cloud mockup intake. If $tee-mockup-pipeline is exposed as an available skill in this scheduled chat, invoke it. In every case, read and follow its latest tracked SKILL.md and required references from that repository. Do not assume a persistent checkout or use shell Git.
+Use the connected GitHub tool to open the public repository bhavikmaradiya/teevybe-mockup-pipeline at its main branch, then run the TeeVybe cloud mockup intake. If $tee-mockup-pipeline is exposed as an available skill in this scheduled chat, invoke it. In every case, read and follow its latest tracked SKILL.md and required references from that repository. Do not assume a persistent checkout or use shell Git.
 
 Runtime configuration:
 - Google Drive intake folder ID: <DRIVE_INTAKE_FOLDER_ID>
