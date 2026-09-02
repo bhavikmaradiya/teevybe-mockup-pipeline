@@ -56,17 +56,30 @@ Do not rewrite the user's request into inferred product rules. The complete repo
 
 ## Ready-to-use cloud or scheduled task prompt
 
+Replace only `<DRIVE_INTAKE_FOLDER_ID>` and `<CONFIRMED_MATERIAL>` before saving the task. The default fit below is oversized; change that single value only when the scheduled intake is for another fit.
+
 ```text
-Run the TeeVybe mockup request supplied with this task from the checked-out repository.
+Run the TeeVybe cloud mockup intake from this checked-out private GitHub repository.
 
-Before taking any batch action, open and read the complete repository-root AGENTS.md and the complete .codex/skills/tee-mockup-pipeline/SKILL.md. Then read every file that the skill requires for the current run, including its workflow, agent-contract, and model-routing references, plus drive-intake.md when source artwork is discovered from Google Drive and drive-publish.md only if Drive publishing is requested. Treat AGENTS.md as the live and sole source of product rules. Do not replace it with this prompt, a summary, remembered instructions, or inferred rules.
+Runtime configuration:
+- Google Drive intake folder ID: <DRIVE_INTAKE_FOLDER_ID>
+- The intake folder is flat; source filenames must remain unchanged.
+- Intake date: today in Asia/Kolkata.
+- Default user-requested fit for every discovered design: oversized fit.
+- Confirmed truthful material callout: <CONFIRMED_MATERIAL>.
+- GitHub processing ledger: cloud-state/drive-intake-history.jsonl.
+- After a batch passes every required approval and audit, publish it to the configured destination governed by drive-publish.md.
 
-Verify the cloud capability gate in CLOUD_RUNBOOK.md before spending image-generation credits. Preserve the supplied user request and inspect every supplied reference individually at original quality. Use the pipeline skill's required persistent roles, records, stage gates, validation, retry control, export process, and final audits exactly as written in the tracked files. Reread AGENTS.md wherever those files require it and detect changes using the required hash workflow.
+Before taking any Drive, Git, or batch action, read the complete repository-root AGENTS.md, CLOUD_RUNBOOK.md, and .codex/skills/tee-mockup-pipeline/SKILL.md. Read every reference required by the skill for this run, including workflow.md, agent-contracts.md, model-routing.md, drive-intake.md, and drive-publish.md. Treat AGENTS.md as the live and sole source of product rules. Do not replace any tracked instruction with this prompt, a summary, remembered instructions, or inferred rules.
 
-If a required repository file, input, model or role capability, image tool, credential, permission, or persistent output location is unavailable, stop and report the exact blocker. Do not improvise a reduced workflow. Do not claim delivery until every approval and verification required by the current repository files has passed.
+Verify the cloud capability gate before spending image-generation credits. Follow drive-intake.md exactly to scan today's direct image files in the configured flat Drive folder, inspect them individually, resolve one-image designs or verified two-image design groups, and consult the GitHub ledger. Synchronize the repository and durably push the required claimed event before generating a group. Never process a group whose latest ledger state prevents automatic processing.
+
+Process only one resolved design group at a time. Pass its original Drive sources and the runtime configuration above into the complete tee-mockup-pipeline workflow. Follow the tracked files directly for all roles, records, stage gates, generation, validation, retry control, export, delivery, publishing, and terminal-ledger behavior. Reread AGENTS.md wherever required and use its current recorded hash throughout the run.
+
+If there are no eligible unprocessed images today, finish with a no-input report and make no generation calls. If a required file, input, grouping decision, model or role capability, image tool, GitHub operation, Drive operation, credential, permission, or durable output location is unavailable, follow the applicable tracked blocker procedure. Do not improvise a reduced workflow, modify Drive source files, force-push Git history, or claim delivery before all required approvals and verification pass.
 ```
 
-Attach the actual user request and durable reference files to that prompt. Do not paste shortened copies of the repository rules into the scheduled task.
+Do not attach duplicate source images to this scheduled prompt; the configured Drive folder is the intake. Do not paste shortened copies of repository rules into the task.
 
 ## Local-safety boundary
 
