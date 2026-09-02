@@ -1,121 +1,77 @@
-# TeeVybe Cloud Runbook
+# TeeVybe Cloud Bootstrap
 
-This file tells a cloud or scheduled Codex task how to operate the TeeVybe mockup pipeline. It is an execution guide, not a second product-rule file.
+This file only connects a cloud or scheduled Codex task to the complete pipeline contained in this repository. It does not restate, summarize, interpret, or replace any product or workflow rule.
 
-`AGENTS.md` at the repository root is always the live and sole source of product rules. The cloud task must read it in full at startup and at every stage gate it defines. If this runbook, a remembered instruction, or a prompt conflicts with `AGENTS.md`, `AGENTS.md` wins.
+## Authoritative files
 
-## What the cloud environment must provide
+The cloud task must read and follow these tracked files directly:
 
-Before spending any image-generation credits, confirm all of the following:
+1. `AGENTS.md`
+   - The live and sole source of TeeVybe product and mockup rules.
+   - Read it completely at startup and again at every stage gate it specifies.
+2. `.codex/skills/tee-mockup-pipeline/SKILL.md`
+   - The pipeline entry point and role boundaries.
+3. `.codex/skills/tee-mockup-pipeline/references/workflow.md`
+   - The complete runtime sequence and stage gates.
+4. `.codex/skills/tee-mockup-pipeline/references/agent-contracts.md`
+   - The required batch lock, stage, asset, rejection, audit, Drive, and history records.
+5. `.codex/skills/tee-mockup-pipeline/references/model-routing.md`
+   - The required persistent roles, models, responsibilities, and escalation boundaries.
+6. `.codex/skills/tee-mockup-pipeline/references/drive-publish.md`
+   - Read only when Drive publishing is requested.
+7. `scripts/verify-delivery.sh`
+   - The final mechanical delivery verifier invoked according to the workflow.
+8. `assets/size-charts/`
+   - The approved reusable chart sources selected according to `AGENTS.md`.
 
-- A checkout of this repository with write access.
-- The root `AGENTS.md`, project-local `.codex/skills/tee-mockup-pipeline/`, approved `assets/size-charts/`, and verification scripts.
-- Image generation and generative image-editing capability that can use the supplied references.
-- Support for the persistent Coordinator, Visual Director, and Operations QA roles described by the skill. If model overrides are unavailable, preserve the same role boundaries and record the fallback before continuing.
-- Reference images available from durable cloud-accessible paths, attachments, or object storage. A `/tmp` path or Downloads path from another device is not accessible to a cloud run.
-- Persistent artifact storage for completed JPEGs and run state if the checkout is temporary.
-- Separately configured credentials and permissions for optional Google Drive publishing. Never store credentials in this repository.
+If any instruction conflicts, is unclear, or appears incomplete, reread the full current `AGENTS.md` and pipeline skill. Do not use this bootstrap file to resolve product-rule questions, and do not rely on remembered or shortened versions of repository instructions.
 
-If any required capability is missing, stop before generation and report the exact missing capability. Repository access alone does not grant image generation, browser, Drive, GitHub, or storage permissions.
+## Cloud capability gate
 
-## Input contract
+Before beginning a run, verify that the cloud environment has:
 
-Each scheduled or cloud invocation should provide:
+- a writable checkout of this complete repository;
+- access to every supplied reference through a durable cloud attachment or storage path;
+- the image-generation and generative-editing capabilities required by the skill;
+- support for the models and persistent role agents required by `model-routing.md`, or an explicitly disclosed runtime fallback that preserves all role boundaries;
+- persistent storage for delivery files and required run state when the checkout is temporary; and
+- separately configured credentials and permissions for any optional external publishing destination.
 
-```yaml
-fit: "oversized fit | regular fit | polo fit"
-front_reference: "durable cloud path or attachment identifier, or blank"
-back_reference: "durable cloud path or attachment identifier, or blank"
-artwork_side_when_single_reference: "front | back"
-design_name: "short human-readable name"
-tshirt_color: "visible garment color"
-user_environment_direction: "optional; authoritative when supplied"
-material_callout: "truthful material wording for 06.jpg"
-drive_destination: "optional grounded folder identifier"
-```
+Repository contents do not grant tool access, account access, credentials, or persistent storage. A local `/tmp` or Downloads path from another device is not a cloud-accessible reference. If a required capability, input, or permission is missing, stop before generation and report the blocker.
 
-When a product-critical value is genuinely ambiguous after inspecting the references, pause and ask the user. Do not guess the fit, artwork side, or material claim.
+## Cloud input handoff
 
-## Required startup sequence
+Supply the task with the user's request exactly as given, including:
 
-1. Read the complete root `AGENTS.md` and compute its SHA-256.
-2. Read the complete pipeline skill and its runtime references:
-   - `.codex/skills/tee-mockup-pipeline/SKILL.md`
-   - `.codex/skills/tee-mockup-pipeline/references/workflow.md`
-   - `.codex/skills/tee-mockup-pipeline/references/agent-contracts.md`
-   - `.codex/skills/tee-mockup-pipeline/references/model-routing.md`
-   - `.codex/skills/tee-mockup-pipeline/references/drive-publish.md` when Drive publishing is requested
-3. Inspect every supplied reference separately at original quality. Never use a collage, contact sheet, or minimap.
-4. Load `work/mockup-runs/batch-history.jsonl`. If unavailable, reconstruct the required non-reuse context from existing delivered anchors as directed by the workflow.
-5. Create `work/mockup-runs/<batch-slug>/batch-lock.yaml` using the contract in `agent-contracts.md`.
-6. Complete and approve the pre-generation lock. Before either gender's first `01.jpg`, keep exact identity, hairstyle, build, accessories, styling, and exact bottom wear pending. Lock only broad eligibility, novelty direction, user requirements, bottom-wear contrast, artwork roles, fit, environment family and contrast plan, output name, and shared-asset decisions.
+- the requested fit, when provided;
+- each original reference as an individual durable attachment or cloud path;
+- any explicit front/back role or artwork-side instruction;
+- any explicit environment, styling, accessory, material, delivery, or publishing instruction; and
+- a durable destination for approved outputs when the runner is ephemeral.
 
-No mockup generation may begin until this startup gate passes.
-
-## Generation decision process
-
-Use one persistent agent for each role throughout the batch:
-
-- Coordinator: owns rule rereads/hashes, stage order, state, retry stops, and final approval.
-- Visual Director: owns reference interpretation, prompts, image generation, and every visual decision.
-- Operations QA: owns paths, dimensions, hashes, permitted copies, exports, and mechanical verification.
-
-Run one gender at a time in this gated order:
-
-1. Generate `01.jpg` as the first candidate without preselecting an exact person or styling. Validate artwork, side, oversized/regular/polo silhouette, model eligibility and novelty, environment contrast, framing, and contrasting bottom wear.
-2. Only after `01.jpg` is visually accepted, record the actual person, hair, body build, visible accessories, styling, and bottom-wear details as the exact same-gender continuity anchor.
-3. Generate `03.jpg` as the different-angle identity test when practical. Continue only after it visibly matches the exact accepted person and styling.
-4. Generate the remaining images individually, validating after every candidate. Never generate the whole gender set blindly.
-5. For `04.jpg`, compose from approximately the chin and lower lip downward. Make the complete artwork the largest practical subject with only a narrow fabric margin. The lower-face allowance is validation tolerance only; it is not permission to request a head-first or T-shirt-centric composition.
-6. For every generated source, mechanically check that the native width:height ratio is exactly `3:4` before visual acceptance. If an otherwise accepted source is only a near miss, use one targeted generative reframe that preserves the accepted identity, artwork, garment, styling, and environment. Never crop, stretch, or pad to repair the ratio.
-7. For `06.jpg`, reread the full rules and follow either the gender-specific model-worn path or the allowed shared model-free path. Validate the real plain-fabric magnifier source, truthful callouts, complete artwork, and safe layout.
-8. For `07.jpg`, copy the fit-matched approved template byte-for-byte into both gender folders. Never regenerate, edit, resize, re-encode, or brand it.
-
-After each generation, validate artwork fidelity and side, exact identity, fit, environment continuity and contrast, pose, framing, exact ratio, and that image's special requirements. Save only accepted candidates.
-
-If the same critical failure repeats twice, pause that stage and strengthen the relevant lock or identity anchor. Regenerate only the failed numbered image unless the accepted anchor itself is invalid.
-
-## Output, audit, and persistence
-
-- Keep transient state in `work/mockup-runs/<batch-slug>/`, outside the delivery folder.
-- Create the delivery hierarchy and filenames exactly as required by `AGENTS.md`.
-- Export every product image at exactly 1080 × 1440 as a high-quality JPEG without stretching.
-- Run `scripts/verify-delivery.sh <batch-directory>` and add `--shared-06` only when that exception was selected.
-- Have the Visual Director inspect every final JPEG individually at delivery size.
-- Have the Coordinator reread `AGENTS.md`, recheck its hash, reconcile the current visual and mechanical reports, and approve delivery explicitly.
-- Append cross-batch history only after final approval. Never rewrite earlier history to hide identity or environment reuse.
-- If the runner is ephemeral, upload the approved delivery folder and required run records to durable artifact storage before the task exits.
-- When Drive publishing is requested, perform it only after local delivery approval and follow `drive-publish.md`. Stop on a collision or partial upload; do not overwrite or clean up automatically.
-
-Never claim completion from prompts, logs, or filenames alone. Completion requires inspected pixels plus a passing mechanical audit.
+Do not rewrite the user's request into inferred product rules. The complete repository instructions determine how the inputs are analyzed and executed.
 
 ## Ready-to-use cloud or scheduled task prompt
 
-Replace every value in angle brackets before scheduling:
-
 ```text
-Run the TeeVybe mockup pipeline from this repository for <DESIGN NAME>.
+Run the TeeVybe mockup request supplied with this task from the checked-out repository.
 
-Inputs:
-- Fit: <FIT>
-- Front reference: <DURABLE CLOUD PATH OR ATTACHMENT, OR BLANK>
-- Back reference: <DURABLE CLOUD PATH OR ATTACHMENT, OR BLANK>
-- If there is one reference, intended artwork side: <FRONT OR BACK>
-- T-shirt color: <COLOR>
-- Environment direction: <OPTIONAL USER DIRECTION>
-- Truthful material callout for 06.jpg: <MATERIAL>
-- Optional Drive destination: <GROUNDED FOLDER ID OR NONE>
+Before taking any batch action, open and read the complete repository-root AGENTS.md and the complete .codex/skills/tee-mockup-pipeline/SKILL.md. Then read every file that the skill requires for the current run, including its workflow, agent-contract, and model-routing references, plus drive-publish.md only if Drive publishing is requested. Treat AGENTS.md as the live and sole source of product rules. Do not replace it with this prompt, a summary, remembered instructions, or inferred rules.
 
-Before any image generation, read CLOUD_RUNBOOK.md, the complete root AGENTS.md, the complete project-local tee-mockup-pipeline skill, and all runtime references required by them. Treat AGENTS.md as the sole live product-rule source. Confirm the cloud capability gate, inspect each input independently, compute and store the AGENTS.md SHA-256, load cross-batch history, create the batch lock, and obtain the required role approvals.
+Verify the cloud capability gate in CLOUD_RUNBOOK.md before spending image-generation credits. Preserve the supplied user request and inspect every supplied reference individually at original quality. Use the pipeline skill's required persistent roles, records, stage gates, validation, retry control, export process, and final audits exactly as written in the tracked files. Reread AGENTS.md wherever those files require it and detect changes using the required hash workflow.
 
-Use persistent Coordinator, Visual Director, and Operations QA roles. Follow the gated 01-anchor and identity-test sequence for each gender; lock no exact identity, hairstyle, accessories, body build, or bottom-wear details before that gender's first 01.jpg is generated and visually accepted. Enforce artwork fidelity, correct side placement, fit, model identity, environment/theme relevance, obvious T-shirt/background contrast, exact native 3:4 generation, artwork-first 04 framing from around the chin/lower lip downward, the applicable 06 workflow, and byte-identical approved 07 templates.
-
-Generate or correct only one required candidate at a time. Stop after two repeated critical failures and strengthen the relevant lock before another generation. Deliver only after the file-by-file visual audit and scripts/verify-delivery.sh both pass against the current AGENTS.md hash. Persist the approved delivery and required run records before the cloud task exits. If a required tool, reference, credential, role, or persistent storage location is unavailable, stop before spending generation credits and report the exact blocker.
+If a required repository file, input, model or role capability, image tool, credential, permission, or persistent output location is unavailable, stop and report the exact blocker. Do not improvise a reduced workflow. Do not claim delivery until every approval and verification required by the current repository files has passed.
 ```
 
-## Updating the pipeline
+Attach the actual user request and durable reference files to that prompt. Do not paste shortened copies of the repository rules into the scheduled task.
+
+## Local-safety boundary
+
+Using or updating this cloud bootstrap does not alter the local generation workflow. Local runs continue to use the same root `AGENTS.md`, project-local pipeline skill, reference files, approved assets, and verifier. Generated deliveries, `work/` state, credentials, and machine-specific Codex configuration remain excluded from Git by `.gitignore`.
+
+## Maintenance
 
 - Change product rules only in `AGENTS.md`.
-- Change orchestration behavior only in `.codex/skills/tee-mockup-pipeline/` and its references.
-- Update this runbook only when cloud startup, input, capability, persistence, or scheduling guidance changes.
-- Commit rule and orchestration changes together when they depend on each other.
+- Change pipeline behavior only in `.codex/skills/tee-mockup-pipeline/` and its referenced files.
+- Change this file only when cloud bootstrapping, capability checks, input accessibility, or persistence guidance changes.
+- Never add a shortened copy of product or pipeline rules here.
