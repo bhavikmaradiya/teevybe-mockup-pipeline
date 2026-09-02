@@ -68,7 +68,7 @@ Apply these requirements to every T-shirt mockup batch in this workspace, and re
 - The locked T-shirt profile determines which approved template source must appear in both the men's and women's `07.jpg` exports. Never mix templates between profiles.
 - Preserve every size label and measurement exactly as recorded here. Do not estimate, round, interpolate, invent missing sizes, or change a value to suit a generated layout.
 - Verify every displayed size-chart value against this section before delivery.
-- `07.jpg` uses an approved reusable final fit-template: it is not generated, fitted, or encoded for each design. The final templates in `assets/size-charts/` are already crisp, natively composed 1080 x 1440 JPEGs, regenerated once from the supplied chart data and style references. For a batch, copy the profile-matched final template byte-for-byte unchanged. Do not add a logo, design-specific motif, text, or other chart change.
+- `07.jpg` uses an approved reusable final fit-template: it is not generated, fitted, or encoded for each design. The final templates in `assets/size-charts/` are already crisp, natively composed 1080 x 1440 JPEGs, regenerated once from the supplied chart data and style references. For a local/project batch, copy the profile-matched final template byte-for-byte unchanged. For a web/cloud Scheduled task publishing to Google Drive, use the cloud-only direct-copy exception in the seventh-image section below. Do not add a logo, design-specific motif, text, or other chart change.
 
 ### Oversized fit
 
@@ -143,10 +143,11 @@ Use the approved polo template below. Its displayed measurements are the authori
   - `Oversized T-Shirt Size Chart.jpg` for `oversized fit`.
   - `Regular T-Shirt Size Chart.jpg` for `regular fit`.
   - `POLO T-Shirt Size Chart.jpg` for `polo fit`.
-- Select the prepared final template matching the locked profile and validate its source path, SHA-256, exact 1080 x 1440 dimensions, visible title, and displayed measurements.
+- For a local/project run, select the prepared final template matching the locked profile and validate its source path, SHA-256, exact 1080 x 1440 dimensions, visible title, and displayed measurements.
 - Do not add a TeeVybe logo, regenerate the chart, overlay any design-specific motif, crop, resize, stretch, re-encode, alter chart content, or otherwise customize an approved final template.
 - Do not use a different template for a batch merely for aesthetics. Use the profile-matched approved source above unless the user explicitly provides and approves a replacement template.
-- Copy the one validated final template byte-for-byte unchanged to both `Men/07.jpg` and `Women/07.jpg`; verify they are byte-identical to the selected source and to each other.
+- For a local/project run, copy the one validated final template byte-for-byte unchanged to both `Men/07.jpg` and `Women/07.jpg`; verify they are byte-identical to the selected source and to each other.
+- Cloud-only direct-copy exception: when a web/cloud Scheduled task publishes its delivery to Google Drive, it may use the connected Drive service's native file-copy action to copy the exact profile-matched approved template directly from the configured Drive template library into the final `Men` and `Women` destination folders as `07.jpg`. In this cloud path, do not download, materialize, hash, upload, or inspect inline base64 for the template. Before copying, verify the locked fit maps to the exact tracked source file ID, filename, parent template folder, and `image/jpeg` MIME type. After copying, list/read back both destination folders and verify that each contains exactly one `07.jpg` created from that approved source, with the expected name, parent, and JPEG MIME type. The observed native copy operations plus destination readback replace per-run byte and SHA-256 comparison only for this cloud path. They do not permit generation, recreation, conversion, re-encoding, resizing, editing, or use of any other template. Local/project handling remains unchanged.
 - Template-library refresh exception: only after an explicit user request may the three reusable templates themselves be regenerated as crisp, natively composed 1080 x 1440 raster JPEGs. Validate every title, table value, note, safe margin, and 3:4 composition before replacing a library template. This is a one-time library-maintenance action, never a per-design batch action.
 
 ## Folder and filename structure

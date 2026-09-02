@@ -8,7 +8,7 @@ When a web/cloud Scheduled task exposes a capable Sol model and the required ima
 
 1. **Coordinator phase:** reread and hash the current rules, maintain the batch lock, enforce stage order and stopping conditions, and authorize the next phase.
 2. **Visual Director phase:** inspect original and generated pixels and make every visual decision. Record a Visual Director stage result before leaving the phase.
-3. **Operations QA phase:** perform only deterministic filesystem, filename, MIME, dimensions, checksum, byte-copy, ledger, and publishing checks. Record a separate Operations QA result based on observed tool output, never on the prior visual conclusion.
+3. **Operations QA phase:** perform only deterministic filesystem, filename, MIME, dimensions, checksum, permitted file-copy, ledger, and publishing checks. For cloud `07.jpg`, apply the native Drive-copy evidence exception in `cloud-size-charts.md`. Record a separate Operations QA result based on observed tool output, never on the prior visual conclusion.
 
 The same Sol session may change logical roles only at an explicit phase boundary. It must not merge the visual and mechanical reports, let one report stand in for the other, skip the final file-by-file visual audit, or approve delivery while either report fails or is stale. Use available deterministic tools/scripts for Operations QA. This cloud-only fallback preserves role boundaries but does not claim independent-agent review. It is not permitted for a local/project run where the normal persistent topology is available.
 
@@ -34,8 +34,8 @@ The dedicated image-generation tool renders pixels. Sol Medium supplies the visu
 
 - Model: `gpt-5.6-luna`
 - Reasoning: `low`
-- Owns: directory creation, numeric filenames, file counts, JPEG/PNG MIME checks, exact dimensions, SHA-256, permitted byte-identical copy of accepted shared assets and selected-template `07.jpg` exports, manifest/history updates, final JPEG export, running the read-only delivery verifier, and mirroring an approved final batch to a configured Google Drive root.
-- Must not: generate or edit mockup imagery or T-shirt artwork, infer design sides or fit, judge identity or artwork quality, choose a background, choose or alter logo placement, create a size chart, or claim visual acceptance. For `07.jpg`, it may only copy and hash the approved final template; it must not add a logo, crop, resize, stretch, re-encode, or customize the chart. For Drive it must only create the approved new hierarchy and upload approved final assets; it must not overwrite, duplicate, rename, move, delete, or modify sharing, and it must stop on a collision or partial failure.
+- Owns: directory creation, numeric filenames, file counts, JPEG/PNG MIME checks, exact dimensions, SHA-256, permitted byte-identical copy of accepted shared assets and local selected-template `07.jpg` exports, the cloud-only native Drive-copy procedure in `cloud-size-charts.md`, manifest/history updates, final JPEG export, running the read-only delivery verifier, and mirroring an approved final batch to a configured Google Drive root.
+- Must not: generate or edit mockup imagery or T-shirt artwork, infer design sides or fit, judge identity or artwork quality, choose a background, choose or alter logo placement, create a size chart, or claim visual acceptance. For local/project `07.jpg`, it may only copy and hash the approved final template. For cloud `07.jpg`, it may only natively copy the exact approved Drive source and verify destination readback. It must never add a logo, crop, resize, stretch, re-encode, customize, download, reconstruct, or upload the chart. For Drive it must only create the approved new hierarchy, upload approved `01.jpg` through `06.jpg` assets, and perform the authorized `07.jpg` copies; it must not overwrite, duplicate, rename, move, delete, or modify sharing, and it must stop on a collision or partial failure.
 
 ## Escalation
 

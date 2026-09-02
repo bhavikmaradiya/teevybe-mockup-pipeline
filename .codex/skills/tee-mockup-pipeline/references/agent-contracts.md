@@ -93,7 +93,7 @@ accepted_by_visual: "agent id"
 notes: ""
 ```
 
-For a shared asset, record the validated source plus both copied destinations and prove checksum identity.
+For a shared asset, record the validated source plus both copied destinations and prove checksum identity. The only exception is cloud `07.jpg`: when `cloud-size-charts.md` authorizes native Google Drive copies, record the exact approved source file ID, both copy-operation results, and both destination readbacks instead of a chart checksum.
 
 ## Rejection record
 

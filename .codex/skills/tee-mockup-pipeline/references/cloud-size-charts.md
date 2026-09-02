@@ -1,6 +1,6 @@
 # Cloud size-chart transport mirror
 
-This reference defines only how an ephemeral web/cloud Scheduled task obtains the already-approved final `07.jpg` JPEG. It does not create, replace, summarize, or alter a size-chart rule. The current `AGENTS.md` remains authoritative, and local/project runs continue to use `assets/size-charts/` directly.
+This reference defines only how an ephemeral web/cloud Scheduled task copies the already-approved final `07.jpg` JPEG into a Google Drive delivery. It does not create, replace, summarize, or alter a size-chart rule. The current `AGENTS.md` remains authoritative, and local/project runs continue to use, byte-copy, and hash `assets/size-charts/` directly.
 
 ## Configured Drive mirror
 
@@ -12,22 +12,21 @@ The exact approved repository JPEGs are mirrored as ordinary binary files in thi
 
 Use only the profile-matched file below:
 
-| Locked profile | Exact filename | Drive file ID | Bytes | SHA-256 |
-| --- | --- | --- | ---: | --- |
-| `oversized fit` | `Oversized T-Shirt Size Chart.jpg` | `1Om8WMdCL9nKCZgStuIpbXxsTZFbWtsJu` | 327923 | `bb314845205dfd376633533f72a342addeca2241fd10aabdead389e51bc01dca` |
-| `regular fit` | `Regular T-Shirt Size Chart.jpg` | `14YfdW-YPd6ZXUH8ken65cSYOHzoUTU1T` | 434240 | `1224f4e865a0f8df464d39ff692525276940e09be516861e6bd8b34acaae1477` |
-| `polo fit` | `POLO T-Shirt Size Chart.jpg` | `1K0-MC4rs3-X3BjXyqQy43Zxsdu5EvgLv` | 424075 | `ba1bab47d6f6abaf61677cc888484e29e1c9400d0c65a451e904002589891243` |
+| Locked profile | Exact filename | Drive file ID |
+| --- | --- | --- |
+| `oversized fit` | `Oversized T-Shirt Size Chart.jpg` | `1Om8WMdCL9nKCZgStuIpbXxsTZFbWtsJu` |
+| `regular fit` | `Regular T-Shirt Size Chart.jpg` | `14YfdW-YPd6ZXUH8ken65cSYOHzoUTU1T` |
+| `polo fit` | `POLO T-Shirt Size Chart.jpg` | `1K0-MC4rs3-X3BjXyqQy43Zxsdu5EvgLv` |
 
 Every listed source is an `image/jpeg` file with exact dimensions `1080 x 1440`.
 
-## Mandatory cloud retrieval and validation
+## Mandatory cloud direct-copy procedure
 
-1. Ground the configured folder and selected file through Google Drive metadata. Match its exact filename, parent folder, file ID, MIME type, and byte size to the table above.
-2. Fetch the selected stored JPEG through Google Drive as a complete raw binary download or streamed file reference. Prefer the connector's raw-file mode with inline base64 disabled. Do not request, reconstruct, or accept a truncated inline-base64 rendering from GitHub or Drive.
-3. Materialize the complete raw file in the run's ephemeral workspace. Verify its JPEG format, exact `1080 x 1440` dimensions, exact byte size, and SHA-256 against the table above before generation begins.
-4. Record the selected Drive file ID, observed metadata, and verified SHA-256 in batch state. A filename or visual preview alone is not proof.
-5. At the `07.jpg` stage, byte-copy that verified local file unchanged to `Men/07.jpg` and `Women/07.jpg`. Do not crop, resize, regenerate, re-encode, add a logo, or make any design-specific change.
-6. Verify that the downloaded source and both delivered copies have the same canonical SHA-256.
+1. Ground the configured template folder and the profile-matched source through Google Drive metadata. Match the locked fit to the exact filename and file ID in the table, require that exact parent folder, and require `image/jpeg` MIME type.
+2. Before generation, verify that the connected Drive service exposes its native file-copy action and that the configured delivery root can be read and written. Do not make a test copy.
+3. Do not fetch the chart through GitHub, download or materialize its binary, request inline base64, calculate a per-run chart checksum, or upload a separately obtained chart.
+4. After the final batch folder and its `Men` and `Women` folders exist, invoke the native Drive copy action twice using the same approved source file ID: copy it into `Men` titled exactly `07.jpg`, then copy it into `Women` titled exactly `07.jpg`.
+5. Record both copy operations' returned source/destination evidence. List/read back both gender folders and verify each contains exactly one direct JPEG child named `07.jpg` in addition to `01.jpg` through `06.jpg`.
+6. Reject any wrong source ID, wrong fit mapping, wrong parent, wrong destination, unexpected filename/MIME type, duplicate `07.jpg`, conversion, generated chart, recreation, upload, or modification.
 
-The Drive files are transport mirrors, not alternate templates. If the connector cannot expose a complete raw file that can be materialized and hashed, or if any metadata/hash/dimension check fails, stop before image generation and report the exact cloud capability failure. Never fall back to a preview, shortened base64, recreated chart, or reduced audit.
-
+The Drive files are transport mirrors, not alternate templates. The native Drive copy plus destination readback is the cloud-only proof that the approved source was reused unchanged; per-run byte comparison and SHA-256 are intentionally not required in this path. If native Drive copy or destination readback is unavailable, stop before image generation and report that exact capability failure. Local/project runs do not use this exception.

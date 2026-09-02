@@ -26,18 +26,18 @@ Mirror the exact local delivery hierarchy beneath the configured root without cr
       01.jpg ... 07.jpg
 ```
 
-Upload only the locally approved final JPEGs, `01.jpg` through `07.jpg`. Do not upload template sources, prompts, manifests, generated candidates, state files, a second chart format, or a separate logo asset.
+For a local/project publish, upload all locally approved final JPEGs, `01.jpg` through `07.jpg`. For a web/cloud Scheduled task, upload the approved final mockup JPEGs `01.jpg` through `06.jpg`, then use the native Drive-copy route in [cloud-size-charts.md](cloud-size-charts.md) for `07.jpg`; do not upload or re-materialize the cloud chart. Do not publish template sources under their library filenames, prompts, manifests, generated candidates, state files, a second chart format, or a separate logo asset.
 
 ## Publish gate
 
 1. Reread the full workspace `AGENTS.md`; compare its SHA-256 with the current batch lock and both final audit reports.
-2. Run the local delivery verifier and require success. Confirm the required shared checksums before any Drive mutation.
+2. For a local/project publish, run the local delivery verifier and require success. For an ephemeral web/cloud Scheduled task, mechanically validate the approved `01.jpg` through `06.jpg` assets and confirm the required shared-`06` checksum when applicable; validate `07.jpg` by its tracked source identity and native Drive copy/readback instead of a local checksum.
 3. Read metadata for the Drive root. Then list its direct children and check for a child whose name exactly equals the approved batch folder.
 4. If that name already exists, stop and record `drive_publish_status: blocked`. Do not overwrite it, create a duplicate with a suffix, upload inside it, or change its sharing. Ask the user for a replacement, versioning, or cleanup decision.
 5. Create the new batch folder, then `Men` and `Women` directly under it. Do not create any other folders.
-6. Upload the fourteen approved JPEGs using their exact numeric names and the correct gender-folder parent. Preserve `image/jpeg` MIME type.
+6. For a local/project publish, upload all fourteen approved JPEGs using their exact numeric names and correct gender-folder parents. For a web/cloud Scheduled task, upload the twelve approved `01.jpg` through `06.jpg` JPEGs, then natively copy the exact profile-matched template source into each gender folder as `07.jpg` according to `cloud-size-charts.md`. Preserve `image/jpeg` MIME type in both paths.
 7. List/read back the new batch folder and both gender folders. Confirm two direct children named exactly `Men` and `Women`, seven direct JPEGs in each folder named `01.jpg` through `07.jpg`, and no unexpected published items.
-8. Record only observed Drive IDs/URLs and metadata. Where the connector exposes file size or checksum, compare it against the local audit and record the result. Verify the two uploaded `07.jpg` files match the approved shared local checksum and are the two separately uploaded copies of the exact same local source. In an ephemeral cloud run, that source may be the fully materialized, mechanically verified Drive transport mirror governed by [cloud-size-charts.md](cloud-size-charts.md); it must still match the canonical repository-template SHA-256 and remain byte-identical.
+8. Record only observed Drive IDs/URLs, copy-operation evidence, and metadata. Where the connector exposes file size or checksum for uploaded assets, compare it against the applicable local audit and record the result. For local/project `07.jpg`, retain the normal shared-source checksum verification. For cloud `07.jpg`, verify that both destination files were created by native copy operations from the same exact approved profile-matched source ID and that readback shows the correct destination name, parent, and JPEG MIME type; do not require chart download, inline base64, byte comparison, or SHA-256.
 9. Mark the stage `pass` only after this readback. The Coordinator can then mark the batch fully delivered.
 
 ## Failure and recovery

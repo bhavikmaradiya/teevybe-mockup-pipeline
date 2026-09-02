@@ -22,11 +22,11 @@ The cloud task must read and follow these tracked files directly:
 7. `.codex/skills/tee-mockup-pipeline/references/drive-intake.md`
    - Read only when a cloud or scheduled run discovers source artwork from Google Drive.
 8. `.codex/skills/tee-mockup-pipeline/references/cloud-size-charts.md`
-   - The mandatory cloud transport and checksum procedure for the unchanged approved `07.jpg` templates.
+   - The mandatory native Google Drive copy procedure for the unchanged approved `07.jpg` templates.
 9. `scripts/verify-delivery.sh`
    - The final mechanical delivery verifier invoked according to the workflow.
 10. `assets/size-charts/`
-   - The approved reusable chart sources selected according to `AGENTS.md`; cloud runs obtain their byte-identical transport mirrors through `cloud-size-charts.md`.
+   - The approved reusable chart sources selected according to `AGENTS.md`; local/project runs use these repository assets, while cloud runs use their tracked Drive source IDs through `cloud-size-charts.md`.
 
 If any instruction conflicts, is unclear, or appears incomplete, reread the full current `AGENTS.md` and pipeline skill. Do not use this bootstrap file to resolve product-rule questions, and do not rely on remembered or shortened versions of repository instructions.
 
@@ -38,7 +38,7 @@ Before beginning a run, verify that the cloud environment has:
 - either the `$tee-mockup-pipeline` skill available to the scheduled chat or connected-GitHub read access to its complete tracked `SKILL.md` and required references; when the skill is exposed by name, invoke it, but always ground the run in the latest repository copies;
 - access to every supplied reference through a durable cloud attachment or storage path;
 - a configured flat Google Drive intake folder plus a separate Drive state folder, with Drive list/create-folder/readback actions available when Drive discovery is enabled;
-- complete raw-file retrieval from the configured Drive template mirror, ephemeral binary materialization, and JPEG dimension/byte-size/SHA-256 validation as required by `cloud-size-charts.md`;
+- access to the exact configured Drive template source and Drive's native file-copy/readback actions required by `cloud-size-charts.md`;
 - the image-generation and generative-editing capabilities required by the skill;
 - either the normal persistent role-agent topology or a Sol session capable of using the explicit cloud-only fallback in `model-routing.md`;
 - a configured Drive delivery root with folder-create, JPEG-upload, and readback actions plus sufficient Drive storage quota; and
@@ -71,7 +71,7 @@ Use the tracked Drive configuration in drive-intake.md and drive-publish.md. The
 
 Before taking any Drive or batch action, use the connected GitHub tool to read the complete latest main-branch contents of repository-root AGENTS.md, CLOUD_RUNBOOK.md, and .codex/skills/tee-mockup-pipeline/SKILL.md. Read every repository reference required by the skill for this run, including workflow.md, agent-contracts.md, model-routing.md, drive-intake.md, drive-publish.md, and cloud-size-charts.md. Treat AGENTS.md as the live and sole source of product rules. GitHub is read-only in this cloud workflow; do not require or attempt a commit, and never use a GitHub ledger. The processing ledger and all claim/terminal markers are stored only in the separate configured Google Drive state folder. Do not replace any tracked instruction with this prompt, a summary, remembered instructions, or inferred rules. Repeat this repository read on every scheduled run because scheduled chats do not share a persistent working copy.
 
-Verify the cloud capability gate before spending image-generation credits. Follow cloud-size-charts.md to fetch the profile-matched approved JPEG as a complete raw Drive file, materialize it ephemerally, and validate its canonical dimensions, byte size, and SHA-256; never obtain the chart binary through GitHub or use truncated inline base64. Follow drive-intake.md exactly to scan today's direct image files in the configured flat Drive folder, inspect them individually, resolve one-image designs or verified two-image design groups, and consult the separate Drive processing state. Create and read back the required Drive claim and terminal markers exactly as specified. Never write into the intake folder and never process a group whose current marker state prevents automatic processing.
+Verify the cloud capability gate before spending image-generation credits. Follow cloud-size-charts.md to validate the profile-matched approved Drive source identity and later copy it natively into both final gender folders as `07.jpg`. Do not fetch the chart binary through GitHub, download or materialize it, inspect inline base64, hash it, or upload it. Follow drive-intake.md exactly to scan today's direct image files in the configured flat Drive folder, inspect them individually, resolve one-image designs or verified two-image design groups, and consult the separate Drive processing state. Create and read back the required Drive claim and terminal markers exactly as specified. Never write into the intake folder and never process a group whose current marker state prevents automatic processing.
 
 If persistent Terra/Luna agent spawning is unavailable but Sol and the remaining required tools are available, disclose and use the cloud-only Sol fallback in model-routing.md. Execute Coordinator, Visual Director, and Operations QA as sequential logical phases with separate records and deterministic mechanical checks. Do not stop solely because Terra/Luna spawning is unavailable, and do not apply this fallback to any other missing capability.
 

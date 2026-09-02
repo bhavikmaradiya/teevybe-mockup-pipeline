@@ -53,14 +53,14 @@ The Visual Director must explicitly validate the actual plain-fabric source poin
 
 Reread `AGENTS.md` before selecting and copying the size-chart template.
 
-1. The Coordinator resolves the locked profile (`oversized fit`, `regular fit`, or `polo fit`) and records the corresponding approved template. A local/project run uses its path from `assets/size-charts/`. An ephemeral web/cloud Scheduled task must use the exact verified Drive transport mirror governed by [cloud-size-charts.md](cloud-size-charts.md), never a GitHub-rendered or truncated binary response.
+1. The Coordinator resolves the locked profile (`oversized fit`, `regular fit`, or `polo fit`) and records the corresponding approved template. A local/project run uses its path from `assets/size-charts/`. A web/cloud Scheduled task records the exact profile-matched Drive source ID governed by [cloud-size-charts.md](cloud-size-charts.md).
 2. The Visual Director validates the prepared final template visually: correct visible profile title, complete expected table/notes, legibility, and a coherent native 1080 x 1440 3:4 composition with no padding or letterboxing.
-3. Operations QA validates the approved final source's JPEG MIME type, exact 1080 x 1440 dimensions, and SHA-256. It must reject any crop, stretch, generated/design-specific addition, logo overlay, re-encoding, or chart-content change.
-4. Operations QA copies the exact approved final template unchanged to `Men/07.jpg` and `Women/07.jpg` and verifies the canonical source plus both copies have the same SHA-256. For a cloud run, the fully materialized and verified Drive mirror is the canonical source used in this comparison.
+3. For a local/project run, Operations QA validates the approved final source's JPEG MIME type, exact 1080 x 1440 dimensions, and SHA-256. For a web/cloud Scheduled task, Operations QA instead validates the exact tracked Drive source ID, filename, parent template folder, and JPEG MIME type; it does not download, materialize, or hash the chart.
+4. For a local/project run, Operations QA copies the exact approved final template unchanged to `Men/07.jpg` and `Women/07.jpg` and verifies the source plus both copies have the same SHA-256. For a web/cloud Scheduled task, Operations QA follows `cloud-size-charts.md` to copy the same approved Drive source natively into the final `Men` and `Women` folders as `07.jpg`, then verifies both copies through Drive readback. It must reject any crop, stretch, generated/design-specific addition, logo overlay, re-encoding, chart-content change, or wrong source mapping.
 
 ## 6. Export and local delivery approval
 
-Operations QA runs `scripts/verify-delivery.sh <batch-directory>` and adds `--shared-06` when the model-free exception was selected. The script is a mechanical gate, not a visual review.
+For a local/project run, Operations QA runs `scripts/verify-delivery.sh <batch-directory>` and adds `--shared-06` when the model-free exception was selected. The script is a mechanical gate, not a visual review. For an ephemeral web/cloud Scheduled task using native Drive copies for `07.jpg`, Operations QA applies the equivalent local checks to `01.jpg` through `06.jpg`; the final fourteen-file, naming, parent, MIME, and `07.jpg` checks occur through the Drive publish readback required below.
 
 The Visual Director audits every final file individually at delivery dimensions. The Coordinator then:
 
@@ -78,8 +78,8 @@ Never claim success from prompt wording alone. Acceptance requires inspecting th
 
 Read [drive-publish.md](drive-publish.md) and reread the full `AGENTS.md` before any Drive write. This is a post-local-delivery mechanics stage; it never changes the locally approved product assets.
 
-1. Operations QA confirms the final verifier passed, all audits and the batch lock use the current rule hash, and the destination has been grounded by Drive metadata.
-2. Operations QA mirrors exactly the approved local hierarchy under the configured Drive root: `<batch-folder>/Men/01.jpg` through `07.jpg`, and the same structure for `Women/`. Do not create an archive, ZIP, collage, or alternate flat upload.
+1. Operations QA confirms the applicable local or cloud mechanical gate passed, all audits and the batch lock use the current rule hash, and the destination has been grounded by Drive metadata.
+2. Operations QA mirrors exactly the approved hierarchy under the configured Drive root: `<batch-folder>/Men/01.jpg` through `07.jpg`, and the same structure for `Women/`. A local/project publish uploads all approved `01.jpg` through `07.jpg` files. A web/cloud Scheduled task uploads the approved `01.jpg` through `06.jpg` files and uses only the profile-matched native Drive-copy procedure in `cloud-size-charts.md` for `07.jpg`. Do not create an archive, ZIP, collage, or alternate flat upload.
 3. Operations QA must stop before writing if a child batch folder with the same name already exists. Do not overwrite, duplicate, rename, move, delete, or adjust sharing. Record the conflict and ask the user for an explicit resolution.
 4. After upload, Operations QA obtains Drive metadata or folder-list readback for the created batch and both gender folders, then records the observed IDs, URLs, parents, names, MIME types, and available file hash/size evidence.
 5. The Coordinator approves full delivery only after the Drive audit passes. Operations QA then appends the immutable history entry containing the final identity anchors, their checksums/descriptors, environment family, and Drive publish record. Never rewrite earlier history entries to hide reuse.
