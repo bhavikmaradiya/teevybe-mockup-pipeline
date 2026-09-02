@@ -19,9 +19,11 @@ The cloud task must read and follow these tracked files directly:
    - The required persistent roles, models, responsibilities, and escalation boundaries.
 6. `.codex/skills/tee-mockup-pipeline/references/drive-publish.md`
    - Read only when Drive publishing is requested.
-7. `scripts/verify-delivery.sh`
+7. `.codex/skills/tee-mockup-pipeline/references/drive-intake.md`
+   - Read only when a cloud or scheduled run discovers source artwork from Google Drive.
+8. `scripts/verify-delivery.sh`
    - The final mechanical delivery verifier invoked according to the workflow.
-8. `assets/size-charts/`
+9. `assets/size-charts/`
    - The approved reusable chart sources selected according to `AGENTS.md`.
 
 If any instruction conflicts, is unclear, or appears incomplete, reread the full current `AGENTS.md` and pipeline skill. Do not use this bootstrap file to resolve product-rule questions, and do not rely on remembered or shortened versions of repository instructions.
@@ -32,6 +34,7 @@ Before beginning a run, verify that the cloud environment has:
 
 - a writable checkout of this complete repository;
 - access to every supplied reference through a durable cloud attachment or storage path;
+- a configured Google Drive intake root and durable intake ledger when Drive discovery is enabled;
 - the image-generation and generative-editing capabilities required by the skill;
 - support for the models and persistent role agents required by `model-routing.md`, or an explicitly disclosed runtime fallback that preserves all role boundaries;
 - persistent storage for delivery files and required run state when the checkout is temporary; and
@@ -56,7 +59,7 @@ Do not rewrite the user's request into inferred product rules. The complete repo
 ```text
 Run the TeeVybe mockup request supplied with this task from the checked-out repository.
 
-Before taking any batch action, open and read the complete repository-root AGENTS.md and the complete .codex/skills/tee-mockup-pipeline/SKILL.md. Then read every file that the skill requires for the current run, including its workflow, agent-contract, and model-routing references, plus drive-publish.md only if Drive publishing is requested. Treat AGENTS.md as the live and sole source of product rules. Do not replace it with this prompt, a summary, remembered instructions, or inferred rules.
+Before taking any batch action, open and read the complete repository-root AGENTS.md and the complete .codex/skills/tee-mockup-pipeline/SKILL.md. Then read every file that the skill requires for the current run, including its workflow, agent-contract, and model-routing references, plus drive-intake.md when source artwork is discovered from Google Drive and drive-publish.md only if Drive publishing is requested. Treat AGENTS.md as the live and sole source of product rules. Do not replace it with this prompt, a summary, remembered instructions, or inferred rules.
 
 Verify the cloud capability gate in CLOUD_RUNBOOK.md before spending image-generation credits. Preserve the supplied user request and inspect every supplied reference individually at original quality. Use the pipeline skill's required persistent roles, records, stage gates, validation, retry control, export process, and final audits exactly as written in the tracked files. Reread AGENTS.md wherever those files require it and detect changes using the required hash workflow.
 
