@@ -18,6 +18,8 @@ Use this skill only when the current workspace contains an `AGENTS.md` whose top
 7. Inspect every supplied reference individually at original quality. Never build a collage, contact sheet, or minimap.
 8. Create the batch lock and receive coordinator approval before image generation.
 
+For web/cloud Scheduled tasks only, also read [references/cloud-image-handoff.md](references/cloud-image-handoff.md) before the first image call and apply it to every renderer handoff and generation-failure report. Local/project runs are unchanged.
+
 Reread the full rule file at every stage gate named in `AGENTS.md`. Before each gate, compare its current SHA-256 with the stored value. If it changed, pause, reread it fully, update the hash and affected lock decisions, and revalidate accepted work. Never revert user changes.
 
 ## Agent topology

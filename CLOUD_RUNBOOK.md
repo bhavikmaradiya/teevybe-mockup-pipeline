@@ -27,6 +27,8 @@ The cloud task must read and follow these tracked files directly:
    - The final mechanical delivery verifier invoked according to the workflow.
 10. `assets/size-charts/`
    - The approved reusable chart sources selected according to `AGENTS.md`; local/project runs use these repository assets, while cloud runs use their tracked Drive source IDs through `cloud-size-charts.md`.
+11. `.codex/skills/tee-mockup-pipeline/references/cloud-image-handoff.md`
+   - The cloud-only per-image renderer handoff and failure-diagnostic procedure; read before the first image call.
 
 If any instruction conflicts, is unclear, or appears incomplete, reread the full current `AGENTS.md` and pipeline skill. Do not use this bootstrap file to resolve product-rule questions, and do not rely on remembered or shortened versions of repository instructions.
 
@@ -76,6 +78,8 @@ Verify the cloud capability gate before spending image-generation credits. Follo
 If persistent Terra/Luna agent spawning is unavailable but Sol and the remaining required tools are available, disclose and use the cloud-only Sol fallback in model-routing.md. Execute Coordinator, Visual Director, and Operations QA as sequential logical phases with separate records and deterministic mechanical checks. Do not stop solely because Terra/Luna spawning is unavailable, and do not apply this fallback to any other missing capability.
 
 Process only one resolved design group at a time. Pass its original Drive sources and the runtime configuration above into the complete tee-mockup-pipeline workflow. Follow the tracked files directly for all roles, records, stage gates, generation, validation, retry control, export, delivery, publishing, and Drive terminal-marker behavior. Reread AGENTS.md wherever required and use its current recorded hash throughout the run.
+
+Before the first image call, read and apply references/cloud-image-handoff.md from the pipeline skill directory for every renderer request and generation-failure report.
 
 If there are no eligible unprocessed images today, finish with a no-input report and make no generation calls. If a required repository instruction, input, grouping decision, model or role capability, image tool, connected-GitHub read operation, Drive state/publish operation, credential, permission, or durable output location is unavailable, or actual storage exhaustion is confirmed, follow the applicable tracked blocker procedure for that execution only. Missing quota-reporting access alone must not block the run: apply the storage-quota policy in drive-publish.md, record quota as unavailable, and continue when the remaining required gates pass. Do not pause, disable, delete, or change the recurring Scheduled task unless the user explicitly asks. Do not improvise a reduced workflow, modify Drive source files, use shell Git or attempt GitHub writes, or claim delivery before all required approvals and verification pass.
 ```

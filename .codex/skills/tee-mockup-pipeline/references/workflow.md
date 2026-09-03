@@ -28,6 +28,8 @@ Do not run competing visual generations in parallel. Operations QA may inspect a
 
 ## 3. Gender generation gates
 
+For web/cloud Scheduled runs only, apply [cloud-image-handoff.md](cloud-image-handoff.md) to each call: keep workflow execution separate from the single-asset visual brief, bind the actual source references, and retain the exact call evidence. Use its failure diagnosis with the retry limits below; this does not change local/project execution.
+
 Run each gender as a gated sequence:
 
 1. Generate `01.jpg` in the final composition ratio without an exact prelocked identity or styling description. Use recent accepted anchor descriptors only to add a concise non-reuse direction against recurring face, hair, facial-hair, and accessory combinations; this must not become a canonical identity specification before generation. Validate the result as the front, identity, styling, fit, artwork, environment, and bottom-wear anchor, including checking that its visible identity is not reused from prior batches. Before acceptance, only broad model eligibility, explicit user constraints, bottom-wear contrast, and visible cross-batch novelty apply. After acceptance, record the actual identity, hairstyle, essential styling, accessories, body build, and bottom-wear style/color/wash/silhouette as the exact continuity lock. Do not reject an otherwise suitable first `01.jpg` merely because acceptable hair, facial details, accessories, styling, or bottoms differ from a speculative preflight preference.
